@@ -30,16 +30,15 @@ module.exports = function(app) {
         });
     });
     // Select more post
-    app.get('/Search?', (req, res) => {
+     app.get('/Search?', (req, res) => {
         let names = req.query;
-        names.length > 0 ? names : false;
-        let tags = names.name.map(e => `${e}`);
-        tags = mysql.escape(tags);
-        console.log(tags);
+        let tags = names.name.map(e => e);
+        let parTags = tags.map(e => '?').toString();
+         console.log(tags);
         //let sql = `SELECT org.name   FROM org INNER JOIN org_has_tag ON org.id = org_has_tag.org_id where org_has_tag.tag_id = ? ;`;
         let sql = `SELECT *
         FROM tag INNER JOIN ((org INNER JOIN contact ON org.id = contact.org_id) INNER JOIN org_has_tag ON org.id = org_has_tag.org_id) ON tag.id = org_has_tag.tag_id
-        WHERE tag.name IN (${tags});`;
+        WHERE tag.name IN (${parTags});`;
         let query = db.query(sql,tags, (err, result) => {
             if(err) throw err;
             console.log(result);
