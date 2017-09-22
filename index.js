@@ -16,21 +16,24 @@ con.connect(function(err) {
 });
 
 app.get('/search', function (req, res) {
-  res.send(JSON.stringify(req.query)) 
-  var que = req.query.tag.map(t => t).join(',')
-  sendQuery(que);
-})
-app.listen(3000)
-
-function sendQuery(que){
+  var que;
+  console.log(req.query.tag);
+  if (req.query.tag.length > 0){
+    que = req.query.tag;
+  }else{
+    que = req.query.tag.map(x => x).join(',');
+  }
   con.query(`SELECT ${que} FROM org;`, (err, res) => {
-      if (err) throw err
-      // console.log(res[1].name);
-      // console.log(res[1].description_company);    
-      console.log(res);  
-      con.end();  
-  })
-}
+    if (err) {
+      throw err
+      }else{  
+        console.log(res);
+      }  
+      // con.end();
+    });
+  res.send(JSON.stringify(req.query));
+});
+app.listen(3000);
 
  
   
