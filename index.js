@@ -23,17 +23,19 @@ app.get('/search', function (req, res) {
   }else{
     que = req.query.tag.map(x => x).join(',');
   }
-  con.query(`SELECT ${que} FROM org;`, (err, res) => {
+  con.query(`SELECT ${que} FROM org;`, (err, row) => {
     if (err) {
       throw err
       }else{  
-        console.log(res);
+        console.log(row);
+        res.send(row);
       }  
       // con.end();
     });
-  res.send(JSON.stringify(req.query));
 });
-app.listen(3000);
+app.listen(3000, () =>
+  console.log('App is listening to port 3000')
+);
 
  
   
