@@ -36,7 +36,6 @@ module.exports = function(app) {
         let tags = names.name.map(e => `${e}`);
         tags = mysql.escape(tags);
         console.log(tags);
-        //IN(' + tags.map(e => '?') +')
         //let sql = `SELECT org.name   FROM org INNER JOIN org_has_tag ON org.id = org_has_tag.org_id where org_has_tag.tag_id = ? ;`;
         let sql = `SELECT *
         FROM tag INNER JOIN ((org INNER JOIN contact ON org.id = contact.org_id) INNER JOIN org_has_tag ON org.id = org_has_tag.org_id) ON tag.id = org_has_tag.tag_id
