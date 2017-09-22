@@ -34,15 +34,15 @@ module.exports = function(app) {
     // Select one or more post
     app.get('/Search?', (req, res) => {
         let names = req.query.name;
-    if (Array.isArray(names)) {
-         var tags = names.map(e => e);
-         var parTags = tags.map(e => '?').toString();
-    } else {
-         tags = [names];
-         parTags = '?';
-         console.log(tags);
-         console.log(parTags);
-    }
+        if (Array.isArray(names)) {
+            var tags = names.map(e => e);
+            var parTags = tags.map(e => '?').toString();
+        } else {
+            tags = [names];
+            parTags = '?';
+            console.log(tags);
+            console.log(parTags);
+        }
         let sql = `SELECT *
         FROM tag INNER JOIN ((org INNER JOIN contact ON org.id = contact.org_id) INNER JOIN org_has_tag ON org.id = org_has_tag.org_id) ON tag.id = org_has_tag.tag_id
         WHERE tag.name IN (${parTags});`;
