@@ -1,0 +1,12 @@
+
+{{vm.title}}
+<hr>
+<ol>
+    <li ng-repeat="todo in vm.todos">
+       <per ng-style="{'background-color': todo.Done == 0 ? 'red' : 'green'}">
+            <h3>{{todo.name}}</h3>
+            <br> 
+        </per>
+    </li>
+</ol>
+<hr>
