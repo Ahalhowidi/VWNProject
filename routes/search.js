@@ -28,21 +28,19 @@ function tagsNamesQuery(res, orgsArray) {
                     };
                 });
             }
-            const api_res = {
+            res.json({
                 tags: tagsArray,
                 results: {
                     orgs_quantity: orgsArray.length,
                     orgs: orgsArray
                 }
-            };
-            res.json(api_res);
+            });
         }
     });
 }
 router.get('/search', function(req, res) {
-    const orgsArray = [];
     if (!req.query.tag) {
-        tagsNamesQuery(res, orgsArray);
+        tagsNamesQuery(res, []);
     }
     else {
         let searchTags = req.query.tag;
@@ -86,8 +84,8 @@ router.get('/search', function(req, res) {
                 console.error(error);
             }
             else {
+                const orgsArray = [];
                 if (results.length > 0) {
-                    let stepper = -1;
                     for (i=0 ; i<results.length ; i++)  {
                         newContact = {
                             id: results[i].contact_id,
@@ -101,39 +99,38 @@ router.get('/search', function(req, res) {
                             email: results[i].email,
                             web: results[i].web
                         };
-                        if (i > 0 && results[i].id === orgsArray[stepper].id) {
+                        if (i > 0 && results[i].id === orgsArray[orgsArray.length - 1].id) {
                             isNotExist = true;
-                            for (j=0 ; j<orgsArray[stepper].tag.length ; j++) {
-                                if (results[i].tag_id === orgsArray[stepper].tag[j]) {
+                            for (j=0 ; j<orgsArray[orgsArray.length - 1].tag.length ; j++) {
+                                if (results[i].tag_id === orgsArray[orgsArray.length - 1].tag[j]) {
                                     isNotExist = false;
                                     break;
                                 }
                             }
                             if (isNotExist) {
-                                orgsArray[stepper].tag.push(results[i].tag_id);
+                                orgsArray[orgsArray.length - 1].tag.push(results[i].tag_id);
                             }
                             isNotExist = true;
-                            for (j=0 ; j<orgsArray[stepper].contact.length ; j++) {
+                            for (j=0 ; j<orgsArray[orgsArray.length - 1].contact.length ; j++) {
                                 if (results[i].contact_id ===
-                                    orgsArray[stepper].contact[j].id) {
+                                    orgsArray[orgsArray.length - 1].contact[j].id) {
                                         isNotExist = false;
                                         break;
                                 }
                             }
                             if (isNotExist) {
-                                orgsArray[stepper].contact.push(newContact);
+                                orgsArray[orgsArray.length - 1].contact.push(newContact);
                             }
                         }
                         else {
-                            stepper++;
-                            orgsArray[stepper] = {
+                            orgsArray.push({
                                 id: results[i].id,
                                 name: results[i].name,
                                 description_company: results[i].description_company,
                                 description_person: results[i].description_person,
                                 contact: [newContact],
                                 tag: [results[i].tag_id]
-                            };
+                            });
                         }
 
                     }
