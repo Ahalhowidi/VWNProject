@@ -2,7 +2,7 @@ const fs = require('fs');
 const mysql = require('mysql');
 const express = require('express');
 
-let i, j, isNotExist;
+let i, j, isNotExist, newContact;
 const config = JSON.parse(fs.readFileSync("config-secret.json"))
 const connection = mysql.createConnection({
     host: config.host,
@@ -72,9 +72,21 @@ router.get('/search', function(req, res) {
                         }
                         else {
                             const orgsArray = [];
-                            let stepper = -1;
                             if (results.length > 0) {
+                                let stepper = -1;
                                 for (i=0 ; i<results.length ; i++) {
+                                    newContact = {
+                                        id: results[i].contact_id,
+                                        post_code: results[i].post_code,
+                                        city: results[i].city,
+                                        hous_number: results[i].hous_number,
+                                        extension: results[i].extra,
+                                        latitude: results[i].latitude,
+                                        longitude: results[i].longitude,
+                                        phone: results[i].phone,
+                                        email: results[i].email,
+                                        web: results[i].web
+                                    };
                                     if (i > 0 && results[i].id === orgsArray[stepper].id) {
                                         isNotExist = true;
                                         for (j=0 ; j<orgsArray[stepper].tag.length ; j++) {
@@ -95,18 +107,7 @@ router.get('/search', function(req, res) {
                                             }
                                         }
                                         if (isNotExist) {
-                                            orgsArray[stepper].contact.push({
-                                                id: results[i].contact_id,
-                                                post_code: results[i].post_code,
-                                                city: results[i].city,
-                                                hous_number: results[i].hous_number,
-                                                extension: results[i].extra,
-                                                latitude: results[i].latitude,
-                                                longitude: results[i].longitude,
-                                                phone: results[i].phone,
-                                                email: results[i].email,
-                                                web: results[i].web
-                                            });
+                                            orgsArray[stepper].contact.push(newContact);
                                         }
                                     }
                                     else {
@@ -116,27 +117,18 @@ router.get('/search', function(req, res) {
                                             name: results[i].name,
                                             description_company: results[i].description_company,
                                             description_person: results[i].description_person,
-                                            contact: [{
-                                                id: results[i].contact_id,
-                                                post_code: results[i].post_code,
-                                                city: results[i].city,
-                                                hous_number: results[i].hous_number,
-                                                extension: results[i].extra,
-                                                latitude: results[i].latitude,
-                                                longitude: results[i].longitude,
-                                                phone: results[i].phone,
-                                                email: results[i].email,
-                                                web: results[i].web
-                                            }],
+                                            contact: [newContact],
                                             tag: [results[i].tag_id]
                                         };
                                     }
                                 }
                             }
                             const api_res = {
-                                orgs: orgsArray.length,
-                                results: orgsArray,
-                                tags: tagsArray
+                                tags: tagsArray,
+                                results: {
+                                    orgs_quantity: orgsArray.length,
+                                    orgs: orgsArray
+                                }
                             };
                             res.json(api_res);
                         }
