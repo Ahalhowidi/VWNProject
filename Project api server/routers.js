@@ -23,7 +23,7 @@ module.exports = function(app) {
 
     // Select all posts
     app.get('/', (req, res) => {
-        let sql = `SELECT tag.name  FROM tag;`;
+        let sql = `SELECT tag.name_tag  FROM tag;`;
         let query = db.query(sql, (err, result) => {
             if(err) throw err;
             console.log(result);
@@ -34,18 +34,18 @@ module.exports = function(app) {
     // Select one or more post
     app.get('/Search?', (req, res) => {
         let names = req.query.name;
-        if (Array.isArray(names)) {
-            var tags = names.map(e => e);
-            var parTags = tags.map(e => '?').toString();
-        } else {
-            tags = [names];
-            parTags = '?';
-            console.log(tags);
-            console.log(parTags);
-        }
+    if (Array.isArray(names)) {
+         var tags = names.map(e => e);
+         var parTags = tags.map(e => '?').toString();
+    } else {
+         tags = [names];
+         parTags = '?';
+         console.log(tags);
+         console.log(parTags);
+    }
         let sql = `SELECT *
-        FROM tag INNER JOIN ((org INNER JOIN contact ON org.id = contact.org_id) INNER JOIN org_has_tag ON org.id = org_has_tag.org_id) ON tag.id = org_has_tag.tag_id
-        WHERE tag.name IN (${parTags});`;
+        FROM tag INNER JOIN ((org INNER JOIN contact ON org.idorg = contact.org_id) INNER JOIN org_has_tag ON org.idorg = org_has_tag.org_id) ON tag.idtag = org_has_tag.tag_id
+        WHERE tag.name_tag IN (${parTags});`;
         let query = db.query(sql,tags, (err, result) => {
             if(err) throw err;
             console.log(result);
