@@ -1,7 +1,8 @@
-var mysql = require('mysql');
-var express = require('express');
+const mysql = require('mysql');
+const express = require('express');
 
-var app = express();
+const app = express();
+const router = express.Router();
 
 var con = mysql.createConnection({
   host: "localhost",
@@ -15,15 +16,21 @@ con.connect(function(err) {
   console.log("Connected!");
 });
 
-app.get('/search', function (req, res) {
+router.get('/', (req, res)=>{
+  con.query('select name from tag', (err,row) =>{
+    res.send(row)
+  })
+})
+
+router.get('/search', function (req, res) {
   var que;
-  console.log(req.query.tag);
+  
   if (req.query.tag.length > 0){
     que = req.query.tag;
   }else{
     que = req.query.tag.map(x => x).join(',');
   }
-  con.query(`SELECT ${que} FROM org;`, (err, row) => {
+  con.query(`SELECT ?? FROM org`,[que],(err, row) => {
     if (err) {
       throw err
       }else{  
@@ -33,6 +40,8 @@ app.get('/search', function (req, res) {
       // con.end();
     });
 });
+app.use('/', router);
+
 app.listen(3000, () =>
   console.log('App is listening to port 3000')
 );
