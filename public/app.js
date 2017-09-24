@@ -2,6 +2,7 @@
     
     var app = angular.module('app', ['ngRoute', 'angular-jwt']);
 
+
    
     app.config(function($routeProvider, $locationProvider) {
 
@@ -44,6 +45,7 @@
     function mainController($http, $window, $location) {
         var vm = this;
         vm.title = "mainController";
+        vm.checkboxModel2 = [];
 
         vm.getAlltags = function() {
             $http.get('/api/allTags').then(function(response) {
@@ -56,20 +58,30 @@
         vm.getByTags = function() {
            // vm.checkboxModel2 = vm.checkboxModel2.filter(Boolean)
 
-                console.log("tag");
-                console.log( vm.checkboxModel2);
+                //console.log("tag");
+                //console.log( vm.checkboxModel2);
 
 
-            if (vm.checkboxModel2 == 0){
-                console.log('empty')
-                console.log(vm.allTags)
-                vm.checkboxModel2[1] = 1
+            function isNotZero(element, index, array) {
+                return element == 0;
+            }
+            const z= vm.checkboxModel2.every(isNotZero);
+            //console.log(z)
+
+            if (vm.checkboxModel2 == 0 || z){
+                //console.log('empty')
+                //console.log(vm.allTags.length)
+
+                for (var i=0; i<= vm.allTags.length; i++) {
+                    vm.checkboxModel2[i] = i;
+                }
+                //console.log(vm.checkboxModel2)
             }
 
             $http.get('/api/getByTags/:tags' + vm.checkboxModel2).then(function(response) {
                 vm.matchedOrg = response.data;
                 console.log(vm.matchedOrg)
-                vm.checkboxModel2 = [];
+
 
             });
 
@@ -78,29 +90,35 @@
         vm.getPrByTags = function() {
            // vm.checkboxModel2 = vm.checkboxModel2.filter(Boolean)
 
-                console.log("tag");
-                console.log( vm.checkboxModel2);
+                //console.log("tag");
+                //console.log( vm.checkboxModel2);
+            function isNotZero(element, index, array) {
+                return element == 0;
+            }
+            const z= vm.checkboxModel2.every(isNotZero);
+           // console.log(z)
 
+            if (vm.checkboxModel2 == 0 || z){
+                //console.log('empty')
+                //console.log(vm.allTags.length)
 
-            if (vm.checkboxModel2 == 0){
-                console.log('empty')
-                console.log(vm.allTags)
-                vm.checkboxModel2[1] = 1
+                for (var i=0; i<= vm.allTags.length; i++) {
+                    vm.checkboxModel2[i] = i;
+                }
+              //  console.log(vm.checkboxModel2)
             }
 
             $http.get('/api/getPrByTags/:tags' + vm.checkboxModel2).then(function(response) {
                 vm.matchedOrg = response.data;
                 console.log(vm.matchedOrg)
-                vm.checkboxModel2 = [];
+
 
             });
 
         };
 
-        vm.checkboxModel = {
-            val: {}
-        };
-        vm.checkboxModel2 = [];
+
+
     }
 
     }());

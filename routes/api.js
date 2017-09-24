@@ -19,9 +19,10 @@ router.get('/getByTags/:tags', function(request, response) {
     const tags = tagsId.shift()
     const tagId = tagsId.filter(Boolean)
     connection.query(
-        `select org.name , org.description_company from org_has_tag 
-	left join org on  org_has_tag.org_id = org.id
-	left join tag on  org_has_tag.tag_id = tag.id
+        `select org.name , org.description_company, contact.web , contact.email, contact.city, contact.post_code from org_has_tag 
+	INNER join org on  org_has_tag.org_id = org.id
+	INNER join tag on  org_has_tag.tag_id = tag.id
+	INNER join contact on  contact.org_id = org.id
 WHERE org_has_tag.tag_id IN (${tagId})
 group by org.id`,
          function (error, results, fields) {
@@ -35,10 +36,12 @@ router.get('/getPrByTags/:tags', function(request, response) {
     const tagsId = (request.params.tags).split(',')
     const tags = tagsId.shift()
     const tagId = tagsId.filter(Boolean)
+
     connection.query(
-        `select org.name , org.description_person from org_has_tag 
-	left join org on  org_has_tag.org_id = org.id
-	left join tag on  org_has_tag.tag_id = tag.id
+        `select org.name , org.description_person, contact.web , contact.email, contact.post_code , contact.city from org_has_tag 
+	INNER join org on  org_has_tag.org_id = org.id
+	INNER join tag on  org_has_tag.tag_id = tag.id
+	INNER join contact on  contact.org_id = org.id
 WHERE org_has_tag.tag_id IN (${tagId})
 group by org.id`,
         function (error, results, fields) {

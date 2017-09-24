@@ -4,24 +4,25 @@
 
 
 <label ng-repeat="tag in vm.allTags">
-
-        <input type="checkbox" ng-model="vm.checkboxModel2[tag.id]"
-               ng-true-value="{{tag.id}}" ng-false-value="0"> {{tag.name}}
+  <pre>
+<input type="checkbox" ng-model="vm.checkboxModel2[tag.id]" ng-true-value="{{tag.id}}" ng-false-value="0"> {{tag.name}}
+  </pre>
 </label>
 <br>
-<button class="btn btn-danger navbar-right" ng-click="vm.getByTags();">search for Co</button>
-<button class="btn btn-danger navbar-right" ng-click="vm.getPrByTags();">search for Pr</button>
+<button class="btn btn-danger" ng-click="vm.getByTags();">search for Co</button>
+<button class="btn btn-danger" ng-click="vm.getPrByTags();">search for Pr</button>
 <hr>
 <br>
-    <p ng-if="vm.matchedOrg">{{vm.matchedOrg.length}} results</p>
+<p ng-if="vm.matchedOrg">{{vm.matchedOrg.length}} results</p>
 <hr>
-    <ol >
-        <li ng-repeat="org in vm.matchedOrg">
+<ol >
+    <li ng-repeat="org in vm.matchedOrg ">
             <pre>
- <a href="#" >{{org.name}}</a> : {{org.description_company}} {{org.description_person}}
+ <a href="#" >{{org.name}}</a> : {{org.description_company}} {{org.description_person}} {{org.email}}/{{org.web}}
+ {{org.post_code}}/{{org.city}}
             </pre>
-        </li>
-    </ol>
-
+    </li>
+</ol>
 
 <hr>
+
