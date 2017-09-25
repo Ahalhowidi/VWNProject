@@ -2,9 +2,8 @@ const fs = require('fs');
 const mysql = require('mysql');
 const express = require('express');
 
-let i, j, isNotExist, newContact;
 const router = express.Router();
-const config = JSON.parse(fs.readFileSync("config-secret.json"))
+const config = JSON.parse(fs.readFileSync('config-secret.json'))
 const connection = mysql.createConnection({
     host: config.host,
     user: config.user,
@@ -13,132 +12,141 @@ const connection = mysql.createConnection({
     database: config.database
 });
 connection.connect();
-function tagsNamesQuery(res, orgsArray) {
-    connection.query("select id, name from tag", function (error, results, fields) {
-        if (error) {
-            console.error(error);
-        }
-        else {
-            let tagsArray = [];
-            if (results.length > 0) {
-                tagsArray = results.map(function(result) {
-                    return {
-                        id: result.id,
-                        name: result.name
-                    };
-                });
-            }
-            res.json({
-                tags: tagsArray,
-                results: {
-                    orgs_quantity: orgsArray.length,
-                    orgs: orgsArray
-                }
-            });
-        }
-    });
-}
-router.get('/search', function(req, res) {
-    if (!req.query.tag) {
-        tagsNamesQuery(res, []);
-    }
-    else {
-        let searchTags = req.query.tag;
-        if (typeof(searchTags) === 'string') {
-            searchTags = [searchTags];
-        }
-        let queryTags = '';
-        for (i=0 ; i<searchTags.length ; i++) {
-            queryTags += 'org_has_tag.tag_id = ?';
-            if (i < searchTags.length - 1) {
-                queryTags += ' or ';
-            }
-        }
-        connection.query(`
-            select
-                org.id, org.name, org.description_company, org.description_person,
-                contact.id as contact_id, contact.post_code, contact.city,
-                contact.hous_number, contact.extra, contact.latitude,
-                contact.longitude, contact.phone, contact.email, contact.web,
-                org_has_tag.tag_id
-            from
-                org
-            inner join
-                contact
-            on
-                org.id = contact.org_id
-            inner join
-                org_has_tag
-            on
-                org.id = org_has_tag.org_id
-            where
-                org.active = 1
-            and
-                org.approved = 1
-            and
-                ( ${queryTags} )
-            order by
-                org.id
-        `, searchTags, function(error, results, fields) {
+function queryPromise(queryBody, tagsArg) {
+    return new Promise((resolve, reject) => {
+        function handleQuery(error, results, fields) {
             if (error) {
-                console.error(error);
+                reject(error);
             }
             else {
-                const orgsArray = [];
-                if (results.length > 0) {
-                    for (i=0 ; i<results.length ; i++)  {
-                        newContact = {
+                resolve(results);
+            }
+        }
+        connection.query(queryBody, tagsArg ? tagsArg : handleQuery, tagsArg ? handleQuery : null);
+    });
+}
+router.get('/search', (req, res) => {
+    let i, j, k, orgIds;
+    const queryResults = {};
+    queryPromise('SELECT id, name FROM tagf').then(results => {
+        queryResults.tag_names = results.map(result => {
+            return {
+                id: result.id,
+                name: result.name
+            };
+        });
+        return queryPromise('SELECT COUNT(*) AS count FROM org');
+    }).then(results => {
+        queryResults.all_orgs = results[0].count;
+        const tagsArg = !req.query.tag ? queryResults.tag_names.map(tag_name => tag_name.id) :
+            (typeof(req.query.tag) === 'string' ? [parseInt(req.query.tag)] :
+            req.query.tag.map(tag => parseInt(tag)));
+        return queryPromise(`
+            SELECT
+                org.id, org.name, org.description_company, org.description_person,
+                org_has_tag.tag_id
+            FROM
+                org
+            INNER JOIN
+                org_has_tag
+            ON
+                org.id = org_has_tag.org_id
+            WHERE
+                    org.active = 1
+                AND
+                    org.approved = 1
+                AND
+                    org_has_tag.tag_id IN (${'?, '.repeat(tagsArg.length - 1) + '?'})
+            ORDER BY
+                org.id
+        `, tagsArg);
+    }).then(results => {
+        const orgsArray = [];
+        if (results.length > 0) {
+            for (i=0 ; i<results.length ; i++) {
+                if (i > 0 && results[i].id === orgsArray[orgsArray.length - 1].id) {
+                    orgsArray[orgsArray.length - 1].matching_tags.push(results[i].tag_id);
+                }
+                else {
+                    orgsArray.push({
+                        id: results[i].id,
+                        name: results[i].name,
+                        description_company: results[i].description_company,
+                        description_person: results[i].description_person,
+                        matching_tags: [results[i].tag_id],
+                        all_tags: [],
+                        contacts: []
+                    });
+                }
+            }
+        }
+        queryResults.matching_orgs = orgsArray.length;
+        queryResults.org_results = orgsArray;
+        orgIds = orgsArray.map(org => org.id).toString();
+        if (orgIds.length > 0) {
+            return queryPromise(`
+                SELECT
+                    org_id, tag_id
+                FROM
+                    org_has_tag
+                WHERE
+                    org_id IN (${orgIds})
+                ORDER BY
+                    org_id
+            `);
+        }
+    }).then(results => {
+        if (results) {
+            k = 0;
+            for (i=0 ; i<results.length ; i++) {
+                for (j=k ; j<queryResults.org_results.length ; j++) {
+                    if (results[i].org_id === queryResults.org_results[j].id) {
+                        queryResults.org_results[j].all_tags.push(results[i].tag_id);
+                        k = j;
+                        break;
+                    }
+                }
+            }
+            return queryPromise(`
+                SELECT
+                    org_id, phone, email, web, latitude, longitude, post_code, city, hous_number,
+                    extra, id AS contact_id
+                FROM
+                    contact
+                WHERE
+                    org_id IN (${orgIds})
+                ORDER BY
+                    org_id
+            `);
+        }
+    }).then(results => {
+        if (results) {
+            k = 0;
+            for (i=0 ; i<results.length ; i++) {
+                for (j=k ; j<queryResults.org_results.length ; j++) {
+                    if (results[i].org_id === queryResults.org_results[j].id) {
+                        queryResults.org_results[j].contacts.push({
                             id: results[i].contact_id,
+                            phone: results[i].phone,
+                            email: results[i].email,
+                            web: results[i].web,
+                            latitude: results[i].latitude,
+                            longitude: results[i].longitude,
                             post_code: results[i].post_code,
                             city: results[i].city,
                             hous_number: results[i].hous_number,
-                            extension: results[i].extra,
-                            latitude: results[i].latitude,
-                            longitude: results[i].longitude,
-                            phone: results[i].phone,
-                            email: results[i].email,
-                            web: results[i].web
-                        };
-                        if (i > 0 && results[i].id === orgsArray[orgsArray.length - 1].id) {
-                            isNotExist = true;
-                            for (j=0 ; j<orgsArray[orgsArray.length - 1].tag.length ; j++) {
-                                if (results[i].tag_id === orgsArray[orgsArray.length - 1].tag[j]) {
-                                    isNotExist = false;
-                                    break;
-                                }
-                            }
-                            if (isNotExist) {
-                                orgsArray[orgsArray.length - 1].tag.push(results[i].tag_id);
-                            }
-                            isNotExist = true;
-                            for (j=0 ; j<orgsArray[orgsArray.length - 1].contact.length ; j++) {
-                                if (results[i].contact_id ===
-                                    orgsArray[orgsArray.length - 1].contact[j].id) {
-                                        isNotExist = false;
-                                        break;
-                                }
-                            }
-                            if (isNotExist) {
-                                orgsArray[orgsArray.length - 1].contact.push(newContact);
-                            }
-                        }
-                        else {
-                            orgsArray.push({
-                                id: results[i].id,
-                                name: results[i].name,
-                                description_company: results[i].description_company,
-                                description_person: results[i].description_person,
-                                contact: [newContact],
-                                tag: [results[i].tag_id]
-                            });
-                        }
-
+                            extension: results[i].extra
+                        });
+                        k = j;
+                        break;
                     }
                 }
-                tagsNamesQuery(res, orgsArray);
             }
-        });
-    }
+        }
+        res.json(queryResults);
+    }).catch(error => {
+        //console.log(error);
+        //throw(error);
+    });
 });
-
 module.exports = router;
