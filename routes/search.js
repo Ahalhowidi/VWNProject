@@ -28,7 +28,7 @@ function queryPromise(queryBody, tagsArg) {
 router.get('/search', (req, res) => {
     let i, j, k, orgIds;
     const queryResults = {};
-    queryPromise('SELECT id, name FROM tagf').then(results => {
+    queryPromise('SELECT id, name FROM tag').then(results => {
         queryResults.tag_names = results.map(result => {
             return {
                 id: result.id,
