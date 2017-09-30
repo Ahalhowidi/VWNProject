@@ -4,6 +4,7 @@ const http = require('http');
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const router = require('./routers');
+const lodash = require('lodash');
 const app = express();
 // App Setup
 app.use(morgan('combined'));
