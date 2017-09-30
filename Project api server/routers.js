@@ -102,7 +102,6 @@ module.exports = app => {
                 for (let prop in orgDb) {
                      orgDb[prop].contacts = [];
                     for (let i=0 ; i < rows.length ; i++) {
-
                         if (rows[i].org_id == orgDb[prop].org_id) {
                             orgDb[prop].contacts.push(rows[i]);
                         }
