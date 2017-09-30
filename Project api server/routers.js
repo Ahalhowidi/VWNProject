@@ -82,7 +82,6 @@ module.exports = app => {
                      orgDb[prop].all_Tags=[]
                      orgDb[prop].matching_Tags = orgDb[prop].tag_id;
                     for (let i=0 ; i < rows.length ; i++) {
-
                         if (rows[i].org_id == orgDb[prop].org_id) {
                             orgDb[prop].all_Tags.push(rows[i].tag_id);
                         }
