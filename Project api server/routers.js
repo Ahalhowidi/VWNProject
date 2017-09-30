@@ -59,7 +59,7 @@ module.exports = app => {
            return _.mapKeys(rows,'tagId');
             }).then ((rows) => {
                 allDb=rows;
-                }).then (() => {
+            }).then (() => {
                 return promiseQuery(`SELECT * 
                 FROM org INNER JOIN org_has_tag ON org.id = org_has_tag.org_id 
                 where org.active = 1 AND org.approved = 1
