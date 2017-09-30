@@ -75,8 +75,7 @@ module.exports = app => {
                 return promiseQuery(`SELECT COUNT(*) AS count FROM org `)
             }).then ((rows) => {
                 allDb.orgs_full_cuont = rows[0].count;
-                allDb.results_Of_orgs = orgDb;
-               // orgDb.tagooooooo_id==orgDb.tag_id;
+                allDb.results_Of_orgs = orgDb
             }).then (() => {
                 return promiseQuery(`SELECT tag_id,org_id
                 FROM org_has_tag INNER JOIN org ON org.id = org_has_tag.org_id`)
