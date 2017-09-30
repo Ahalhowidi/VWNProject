@@ -36,7 +36,6 @@ module.exports = app => {
 
     // Select all posts
     app.get('/', (req, res) => {
-        //let someRows, otherRows;
         promiseQuery('SELECT id,name  FROM tag')
         .then( (rows) => {
             res.send(JSON.stringify(rows));
@@ -52,7 +51,6 @@ module.exports = app => {
         let inpIdTags =
         Array.isArray(req.query.tag) ? req.query.tag.map(tag => parseInt(tag)) : [parseInt(req.query.tag)];
         let parTags = inpIdTags.map(tag => '?').toString(); 
-        //console.log(inpIdTags);
         let sql1 = `SELECT id As tagId, name As tagName
         FROM tag INNER JOIN org_has_tag ON tag.id = org_has_tag.tag_id
         WHERE tag.id IN (${parTags})`;
@@ -112,7 +110,6 @@ module.exports = app => {
                     }
                 }; 
                 res.send(JSON.stringify(allDb));
-               // res.send(allDb);
             }).catch( err => {
             // handle the error
                 res.status(500).send('<h2>Internal Server Error</h2>');
