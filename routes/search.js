@@ -26,15 +26,13 @@ function queryPromise(queryBody, tagsArg) {
     });
 }
 router.get('/search', (req, res) => {
-    let i, j, k, orgIds;
+    let i;
     const queryResults = {};
     queryPromise('SELECT id, name FROM tag').then(results => {
-        queryResults.tag_names = results.map(result => {
-            return {
-                id: result.id,
-                name: result.name
-            };
-        });
+        queryResults.tag_names = {};
+        for (i=0 ; i<results.length ; i++) {
+            queryResults.tag_names[results[i].id] = results[i].name;
+        }
         return queryPromise('SELECT COUNT(*) AS count FROM org');
     }).then(results => {
         queryResults.all_orgs = results[0].count;
@@ -61,51 +59,37 @@ router.get('/search', (req, res) => {
                 org.id
         `, tagsArg);
     }).then(results => {
-        const orgsArray = [];
+        queryResults.org_results = {};
         if (results.length > 0) {
             for (i=0 ; i<results.length ; i++) {
-                if (i > 0 && results[i].id === orgsArray[orgsArray.length - 1].id) {
-                    orgsArray[orgsArray.length - 1].matching_tags.push(results[i].tag_id);
-                }
-                else {
-                    orgsArray.push({
-                        id: results[i].id,
-                        name: results[i].name,
-                        description_company: results[i].description_company,
-                        description_person: results[i].description_person,
-                        matching_tags: [results[i].tag_id],
-                        all_tags: [],
-                        contacts: []
-                    });
-                }
+                queryResults.org_results[results[i].id] = queryResults.org_results[results[i].id] || {
+                    name: results[i].name,
+                    description_company: results[i].description_company,
+                    description_person: results[i].description_person,
+                    matching_tags: [],
+                    all_tags: [],
+                    contacts: []
+                };
+                queryResults.org_results[results[i].id].matching_tags.push(results[i].tag_id);
             }
         }
-        queryResults.matching_orgs = orgsArray.length;
-        queryResults.org_results = orgsArray;
-        orgIds = orgsArray.map(org => org.id).toString();
-        if (orgIds.length > 0) {
+        queryResults.matching_orgs = Object.keys(queryResults.org_results).length;
+        if (Object.keys(queryResults.org_results).length > 0) {
             return queryPromise(`
                 SELECT
                     org_id, tag_id
                 FROM
                     org_has_tag
                 WHERE
-                    org_id IN (${orgIds})
+                    org_id IN (${Object.keys(queryResults.org_results).toString()})
                 ORDER BY
                     org_id
             `);
         }
     }).then(results => {
         if (results) {
-            k = 0;
             for (i=0 ; i<results.length ; i++) {
-                for (j=k ; j<queryResults.org_results.length ; j++) {
-                    if (results[i].org_id === queryResults.org_results[j].id) {
-                        queryResults.org_results[j].all_tags.push(results[i].tag_id);
-                        k = j;
-                        break;
-                    }
-                }
+                queryResults.org_results[results[i].org_id].all_tags.push(results[i].tag_id);
             }
             return queryPromise(`
                 SELECT
@@ -114,43 +98,38 @@ router.get('/search', (req, res) => {
                 FROM
                     contact
                 WHERE
-                    org_id IN (${orgIds})
+                    org_id IN (${Object.keys(queryResults.org_results).toString()})
                 ORDER BY
                     org_id
             `);
         }
     }).then(results => {
         if (results) {
-            k = 0;
             for (i=0 ; i<results.length ; i++) {
-                for (j=k ; j<queryResults.org_results.length ; j++) {
-                    if (results[i].org_id === queryResults.org_results[j].id) {
-                        queryResults.org_results[j].contacts.push({
-                            id: results[i].contact_id,
-                            phone: results[i].phone,
-                            email: results[i].email,
-                            web: results[i].web,
-                            latitude: results[i].latitude,
-                            longitude: results[i].longitude,
-                            post_code: results[i].post_code,
-                            city: results[i].city,
-                            hous_number: results[i].hous_number,
-                            extension: results[i].extra
-                        });
-                        k = j;
-                        break;
-                    }
-                }
+                queryResults.org_results[results[i].org_id].contacts.push({
+                    id: results[i].contact_id,
+                    phone: results[i].phone,
+                    email: results[i].email,
+                    web: results[i].web,
+                    latitude: results[i].latitude,
+                    longitude: results[i].longitude,
+                    post_code: results[i].post_code,
+                    city: results[i].city,
+                    hous_number: results[i].hous_number,
+                    extension: results[i].extra
+                });
             }
         }
         res.json(queryResults);
     }).catch(error => {
         res.status(500).send(`
             <h1>Internal Server Error</h1>
-            <p>The server encountered an internal error
+            <p>
+                The server encountered an internal error
                 or misconfiguration and was unable to complete your request.
             </p>
-            <p>Please contact the server administrator at
+            <p>
+                Please contact the server administrator at
                 <a href="mailto:admin@example.com">admin@example.com</a>
                 to inform them of the time this error occured,
                 and the actions you performed just before this error.
