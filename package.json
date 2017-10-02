@@ -9,6 +9,7 @@
   "author": "Yaser Somaf",
   "license": "ISC",
   "dependencies": {
+    "cors": "^2.8.4",
     "express": "^4.15.4",
     "mysql": "^2.14.1"
   }

@@ -3,7 +3,6 @@ const cors = require('cors');
 const app = express();
 
 app.use(cors());
-app.use(require('./routes/tags'));
 app.use(require('./routes/search'));
 
 const server = app.listen(8080, function() {
