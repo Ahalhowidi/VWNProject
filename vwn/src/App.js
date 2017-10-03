@@ -5,7 +5,7 @@ import Button from './Component/button'
 export default class App extends Component {
     state = {
         tags: [
-            { id: 1, name: 'Account' },
+            { id: 1, name: 'Account', isActive:false },
             { id: 2, name: 'Art' },
             { id: 3, name: 'ICT' },
             { id: 4, name: 'Computer' },
@@ -58,7 +58,9 @@ export default class App extends Component {
 
     render() {
         var head = this.state.tags.map((tag, index) => 
-            <h1 key={index} className={`tag ${false? 'grow' : ''}`} id={tag.id}>{tag.name} </h1>)
+            <h1 key={index} className={`tag ${tag.isActive ? 'grow' : ''}`} onClick={()=>{
+                this.setState({ })
+            }} id={tag.id}>{tag.name} </h1>)
 
         return (
             <div>
