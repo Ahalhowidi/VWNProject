@@ -1,6 +1,6 @@
 import React,{Component} from 'react';
 // import ReactDOM from 'react-dom';
-import '../App.css';
+import '../new_app.css';
 
 export default class Buttons extends Component{
     render(){
@@ -8,12 +8,12 @@ export default class Buttons extends Component{
        
             <div className='top'>
                 <h1>Welcome to VWN website</h1>
-                    <div className="bot">
-                        <div>
-                            <button type="button">New Commers</button>
+                    <div className="bod">
+                    <div>
+                            <button >New Commers</button>
                         </div>
                         <div>
-                            <button>Providers</button>
+                            <button >Provider</button>
                         </div>
                 </div>
             </div>
