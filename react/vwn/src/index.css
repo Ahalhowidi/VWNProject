@@ -8,7 +8,7 @@ main {
     display: flex;
 }
 
-.checkContainer {
+label {
     margin: 20px;
     display: inline-block;
 }

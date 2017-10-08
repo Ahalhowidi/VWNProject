@@ -24,32 +24,18 @@ const queryPromise = (queryBody) => {
         });
     });
 }
-router.get('/search', (req, res) => {
-    const tags = {};
+router.get('/search/orgs', (req, res) => {
     const orgs = {};
     queryPromise(`
         SELECT
-            id, name
+            id, name, description_company, description_person
         FROM
-            tag
+            org
+        WHERE
+                active = 1
+            AND
+                approved = 1
     `).then(results => {
-        results.forEach(function(result) {
-            tags[result.id] = result.name;
-        });
-        if (req.query.orgs) {
-            return queryPromise(`
-                SELECT
-                    id, name, description_company, description_person
-                FROM
-                    org
-            `);
-        }
-        else {
-            res.json({
-                tags: tags
-            });
-        }
-    }).then(results => {
         results.forEach(function(result) {
             orgs[result.id] = {
                 name: result.name,
@@ -63,7 +49,15 @@ router.get('/search', (req, res) => {
             SELECT
                 org_id, tag_id
             FROM
-                org_has_tag
+                    org_has_tag
+                INNER JOIN
+                    org
+            ON
+                org_id = id
+            WHERE
+                    approved = 1
+                AND
+                    active = 1
         `);
     }).then(results => {
         results.forEach(function(result) {
@@ -72,9 +66,17 @@ router.get('/search', (req, res) => {
         return queryPromise(`
             SELECT
                 org_id, phone, email, web, latitude, longitude, post_code, city, hous_number,
-                extension, id AS contact_id
+                extension, contact.id AS contact_id
             FROM
-                contact
+                    contact
+                INNER JOIN
+                    org
+            ON
+                org_id = org.id
+            WHERE
+                    approved = 1
+                AND
+                    active = 1
         `);
     }).then(results => {
         results.forEach(function(result) {
@@ -91,10 +93,7 @@ router.get('/search', (req, res) => {
                 extension: result.extension
             });
         });
-        res.json({
-            tags: tags,
-            orgs: orgs
-        });
+        res.json(orgs);
     }).catch(error => {
         res.status(500).send();
     });
