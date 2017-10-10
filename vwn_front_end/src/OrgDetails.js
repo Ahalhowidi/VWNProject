@@ -27,7 +27,7 @@ const OrgDetails = ({org, tags}) => {
                 <strong>Email:</strong> <a href = {`mailto:${contact.email}`}>{contact.email}</a><br/>
                 <strong>Website:</strong> <a href = {contact.web}>{contact.web}</a><br/>
                 <strong>Post code:</strong> {contact.post_code} {contact.city}<br/>
-                <strong>Hous number:</strong> {contact.hous_number}
+                <strong>House number:</strong> {contact.house_number}
                     {contact.extension ? contact.extension : null}<br/>
 
             </div>)}

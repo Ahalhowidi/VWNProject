@@ -76,7 +76,7 @@ router.get('/search', (req, res) => {
         });
         return queryPromise(`
             SELECT
-                org_id, phone, email, web, latitude, longitude, post_code, city, hous_number,
+                org_id, phone, email, web, latitude, longitude, post_code, city, house_number,
                 extension, contact.id AS contact_id
             FROM
                     contact
@@ -100,7 +100,7 @@ router.get('/search', (req, res) => {
                 longitude: result.longitude,
                 post_code: result.post_code,
                 city: result.city,
-                hous_number: result.hous_number,
+                house_number: result.house_number,
                 extension: result.extension
             });
         });
