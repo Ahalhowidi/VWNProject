@@ -11,7 +11,7 @@ const db = mysql.createConnection({
 	port: config.port,
     database: config.database
 })
-// Connect
+// Connect 
 db.connect((err) => {
     if(err){
         throw err;
@@ -46,8 +46,9 @@ module.exports = app => {
         })
     })
     // Select one or more post
-    let allDb = {}, orgDb = {};
+    
     app.get('/Search', (req, res) => {
+        let allDb = {}, orgDb = {}, tagDB ={};
         let inpIdTags =
         Array.isArray(req.query.tag) ? req.query.tag.map(tag => parseInt(tag)) : [parseInt(req.query.tag)];
         let parTags = inpIdTags.map(tag => '?').toString(); 
@@ -58,12 +59,12 @@ module.exports = app => {
         promiseQuery(req.query.tag == undefined ? sql2 : sql1, inpIdTags).then (rows => {
            return _.mapKeys(rows,'tagId');
             }).then ((rows) => {
-                allDb=rows;
+                tagDB=rows;
             }).then (() => {
                 return promiseQuery(`SELECT * 
                 FROM org INNER JOIN org_has_tag ON org.id = org_has_tag.org_id 
                 where org.active = 1 AND org.approved = 1
-                AND org_has_tag.tag_id IN(${Object.keys(allDb).map(Number).filter(Number)}) `)
+                AND org_has_tag.tag_id IN(${Object.keys(tagDB).map(Number).filter(Number)}) `)
             }).then (rows => {
                 return _.mapKeys(rows,'org_id');
             }).then ((rows) => {
@@ -73,17 +74,17 @@ module.exports = app => {
                 return promiseQuery(`SELECT COUNT(*) AS count FROM org `)
             }).then ((rows) => {
                 allDb.orgs_full_cuont = rows[0].count;
-                allDb.results_Of_orgs = orgDb
+                allDb.orgs = orgDb
             }).then (() => {
                 return promiseQuery(`SELECT tag_id,org_id
                 FROM org_has_tag INNER JOIN org ON org.id = org_has_tag.org_id`)
-            }).then ((rows) => {
+            }).then ((rows) => {     
                 for (let prop in orgDb) {
-                     orgDb[prop].all_Tags=[]
-                     orgDb[prop].matching_Tags = orgDb[prop].tag_id;
+                     orgDb[prop].tags=[]
+                    // orgDb[prop].matching_Tags = orgDb[prop].tag_id;
                     for (let i=0 ; i < rows.length ; i++) {
                         if (rows[i].org_id == orgDb[prop].org_id) {
-                            orgDb[prop].all_Tags.push(rows[i].tag_id);
+                            orgDb[prop].tags.push(rows[i].tag_id);
                         }
                     }
                 };
