@@ -2,13 +2,14 @@ import React, { Component } from 'react';
 
 import Observable from './Observable';
 import OrgDetails from './OrgDetails';
+import Map from './Map';
 
 export default class OrgsContainer extends Component {
 
     constructor() {
         super();
         this.state = {
-            matchingOrgs: []
+            matchingOrgs: {}
         };
     }
 
@@ -23,7 +24,7 @@ export default class OrgsContainer extends Component {
 
     renderOrgs = (action, data) => {
         if (action === 'tagsSelection') {
-            const matchingOrgs = [];
+            const matchingOrgs = {};
             const orgs = this.props.orgs;
             Object.keys(orgs).forEach(orgId => {
                 let matchingOrg = {};
@@ -41,7 +42,7 @@ export default class OrgsContainer extends Component {
                     }
                 });
                 if (matchingOrg.name) {
-                    matchingOrgs.push(matchingOrg);
+                    matchingOrgs[orgId] = matchingOrg;
                 }
             });
             this.setState({
@@ -51,13 +52,13 @@ export default class OrgsContainer extends Component {
     }
 
     render() {
+        const tags = this.props.tags;
+        const matchingOrgs = this.state.matchingOrgs;
         return <div>
+            <Map matchingOrgs = {matchingOrgs} />
             <div>
-                <h1>MAP</h1>
-            </div>
-            <div>
-                {this.state.matchingOrgs.map(org =>
-                    <OrgDetails key = {org.id} org = {org} tags = {this.props.tags} />
+                {Object.keys(matchingOrgs).map(orgId =>
+                    <OrgDetails key = {orgId} org = {matchingOrgs[orgId]} tags = {tags} />
                 )}
             </div>
         </div>;

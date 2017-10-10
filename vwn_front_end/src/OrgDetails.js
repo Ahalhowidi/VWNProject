@@ -10,8 +10,12 @@ const OrgDetails = ({org, tags}) => {
                 key = {tag}
                 className = {org.matchingTags[tag] ? 'focused' : 'normal'}
             >{tags[tag]}</span>)}
+            <button
+                onClick = {event => {
+                    Observable.notify('showOnMap', org.id);
+                }}
+            >Show on map</button>
         </div>
-        {}
         <h2>Description for persons:</h2>
         <p>{org.description_person}</p>
         <h2>Description for companies:</h2>

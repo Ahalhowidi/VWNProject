@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import {BrowserRouter as Router, Route} from 'react-router-dom';
 
-import Observable from './Observable';
 import Loading from './Loading';
 import ServerError from './ServerError';
 import TagsContainer from './TagsContainer';
@@ -19,10 +18,6 @@ export default class App extends Component {
         this.state = {
             status: 0
         };
-    }
-
-    componentWillMount() {
-        //Observable.subscribe();
     }
 
     componentDidMount() {

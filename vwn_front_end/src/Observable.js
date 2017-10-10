@@ -26,13 +26,14 @@ class Observable {
         return this.data[dataType][key];
     }
 
-    notify(action) {
+    notify(action, value) {
         const allowedactions = [
-            'tagsSelection'
+            'tagsSelection',
+            'showOnMap'
         ];
         if (allowedactions.indexOf(action) > -1) {
             this.observers.forEach(observer => {
-                observer(action, this.data);
+                observer(action, value ? value : this.data);
             });
         }
         else {
