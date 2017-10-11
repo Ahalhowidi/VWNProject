@@ -19,11 +19,29 @@ class Observable {
         this.data[dataType][key] = value;
     }
 
+    setDataType(dataType, value) {
+        this.data[dataType] = value;
+    }
+
     get(dataType, key) {
         if (!this.data[dataType]) {
             return false;
         }
-        return this.data[dataType][key];
+        else if (!this.data[dataType][key]) {
+            return false;
+        }
+        else {
+            return this.data[dataType][key];
+        }
+    }
+
+    getDataType(dataType) {
+        if (!this.data[dataType]) {
+            return false;
+        }
+        else {
+            return this.data[dataType];
+        }
     }
 
     notify(action, value) {

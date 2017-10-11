@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import {BrowserRouter as Router, Route} from 'react-router-dom';
 
+import Observable from './Observable'
 import Loading from './Loading';
 import ServerError from './ServerError';
 import TagsContainer from './TagsContainer';
@@ -28,6 +29,13 @@ export default class App extends Component {
                 if (xhr.status === 200) {
                     this.tags = JSON.parse(xhr.response).tags;
                     this.orgs = JSON.parse(xhr.response).orgs;
+                    if (window.location.hash !== '') {
+                        const selectedTags = {};
+                        window.location.hash.slice(1).split(',').forEach(selectedTagId => {
+                            selectedTags[selectedTagId] = true;
+                        });
+                        Observable.setDataType('selectedTags', selectedTags);
+                    }
                 }
                 this.setState({
                     status: xhr.status
