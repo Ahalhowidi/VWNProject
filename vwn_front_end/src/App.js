@@ -29,12 +29,23 @@ export default class App extends Component {
                 if (xhr.status === 200) {
                     this.tags = JSON.parse(xhr.response).tags;
                     this.orgs = JSON.parse(xhr.response).orgs;
-                    if (window.location.hash !== '') {
-                        const selectedTags = {};
-                        window.location.hash.slice(1).split(',').forEach(selectedTagId => {
-                            selectedTags[selectedTagId] = true;
-                        });
-                        Observable.setDataType('selectedTags', selectedTags);
+                    
+                    window.onbeforeunload = e => {
+                        if (typeof(Storage) !== "undefined") {
+                            const selectedTags = Observable.getDataType('selectedTags');
+                            sessionStorage.selectedTags = Object.keys(selectedTags)
+                                .filter(selectedTagId => selectedTags[selectedTagId]).toString();
+                        }
+                    };
+                    if (typeof(Storage) !== "undefined") {
+                        if (sessionStorage.selectedTags) {
+                            const selectedTags = {};
+                            sessionStorage.selectedTags.split(',').forEach(selectedTagId => {
+                                selectedTags[selectedTagId] = true;
+                            });
+                            Observable.setDataType('selectedTags', selectedTags);
+                            sessionStorage.removeItem('selectedTags');
+                        }
                     }
                 }
                 this.setState({

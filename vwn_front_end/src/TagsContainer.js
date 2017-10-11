@@ -3,7 +3,6 @@ import React from 'react';
 import Observable from './Observable'
 
 const TagsContainer = ({tags}) => {
-
     return <div>
         {Object.keys(tags).map(tagId => <button
             key = {tagId}
@@ -11,14 +10,10 @@ const TagsContainer = ({tags}) => {
             onClick = {event => {
                 event.target.classList.toggle('selected_tag');
                 Observable.set('selectedTags', tagId, !Observable.get('selectedTags', tagId));
-                const selectedTags = Observable.getDataType('selectedTags');
-                window.location.hash = Object.keys(selectedTags).filter(selectedTagId =>
-                    selectedTags[selectedTagId]).toString();
                 Observable.notify('tagsSelection');
             }}
         >{tags[tagId]}</button>)}
     </div>;
-
 };
 
 export default TagsContainer;
