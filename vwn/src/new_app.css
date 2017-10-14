@@ -1,10 +1,10 @@
 body{
-    background-color: #5B5DD8;
+    background-color: #3033D8;
 }
 
 h1{
     color: #F8EFEF;
-    font-size: 1.5em;
+    /* font-size: 1.5em; */
     
     text-shadow:
     -1px -1px 0 #000,
@@ -13,13 +13,37 @@ h1{
     1px 1px 0 #000; 
     
 }
+h2{
+    color: #F8EFEF;
+    /* font-size: 1em; */
+    
+    text-shadow:
+    -1px -1px 0 #000,
+    3px -1px 0 #000,
+    -1px 1px 0 #000,
+    1px 1px 0 #000; 
+    
+}
+.grow{
+    transition: .3s;
+    color: #FF2600;
+    font-size: 2em;
+    
+}
+
+.shrink{
+    transition: .3s;
+    color: #F8EFEF;
+    /* font-size: -1em; */
+
+}
 
 .title{
     /* margin-top: 3em; */
     display: flex;
     justify-content: space-around;
     margin-bottom: -25px;
-    background-color: #FFA600;
+    background-color: #FFC400;
 }
 
 .bod{
@@ -27,18 +51,6 @@ h1{
     height: 400px;
 }
 
-.grow{
-    transition: .3s;
-    color: #FF2600;
-    font-size: 2em;
-    
-}
-.shrink{
-    transition: .3s;
-    color: #F8EFEF;
-    font-size: -2em;
-
-}
 
 button{
     background-color: #5B5DD8;
@@ -60,6 +72,7 @@ button{
     /* margin-top: 5em; */
     display: flex;
     justify-content: center;
+    height:auto;
   }
 
   .top{
@@ -67,4 +80,10 @@ button{
     text-align: center;
     padding:2em;
    
+  }
+
+  .map{
+      width:100%;
+      height: 400px;
+      background-color: white;
   }

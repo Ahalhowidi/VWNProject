@@ -1,76 +1,99 @@
 import React, { Component } from 'react';
-import './new_app.css'
 import Button from './Component/button'
+import TagData from './Component/tagdata'
+// import Results from './Component/results'
+import Map from './Component/map'
+import './new_app.css'
+
 
 export default class App extends Component {
-    state = {
-        tags: [
-            { id: 1, name: 'Account', isActive:false },
-            { id: 2, name: 'Art' },
-            { id: 3, name: 'ICT' },
-            { id: 4, name: 'Computer' },
-            { id: 5, name: 'Trade' },
-            { id: 6, name: 'Music' },
-            { id: 7, name: 'Sport' },
-            { id: 8, name: 'Eat' },
-            { id: 9, name: 'Politic' },
-            
-            
-        ],
-        tagSelected:[]
+    
+     state = {
+        tags: [],
+        tagSelected: [],
+        result:[]
     };
 
-
-    componentDidMount() {
+    addTagToState = (index, tag) => {
         
-        // var tag =  document.querySelectorAll(".tag");
-        // tag.forEach((tag)=> {
-        //     tag.addEventListener("click", this.style);
-        // });
+        let tags = this.state.tags,
+            tagSelected = this.state.tagSelected ;
+            
+        tags[index].isActive = !tags[index].isActive;
+        this.setState({tags});
+
+        let indexTag = tagSelected.indexOf(tag.id);
+        tags[index].isActive ? tagSelected.push(tag.id) : tagSelected.splice(indexTag, 1);
+        this.setState({tagSelected})
+        
+    }
+    
+    addTags(newTags){   
+        const tagArr = Object.values(newTags); 
+        let obj={}; 
+        let arr=[];
+        tagArr.map((e,i)=>{
+            obj = {
+                id: i+1,
+                name: e
+            }
+            arr.push(obj);
+        });
+        this.setState({
+            tags: arr
+        })
     }
 
-     
-
-    style(){
-        
-        var selectedId =[];
-        var tag = this.classList;
-         if (tag.contains('grow')){
-             tag.remove('grow');
-             tag.add('shrink');
-             ///////
-        }else{
-            if (tag.contains('shrink')){
-                tag.remove('shrink');
-            } 
-            tag.add('grow');  
-            // this.setState({
-            //     selectedId: selectedId.push(tag.id)
-            // })
-            // console.log(this.state.selectedId);       
-        }
+    addResult(result){
+        const tagArr = Object.values(result); 
+        let obj={}; 
+        let arr=[];
+        tagArr.map((e,i)=>{
+            obj = {
+                id: i+1,
+                name: e
+            }
+            arr.push(obj);
+        });
+        this.setState({
+            result:arr
+        })
     }
-
-     test(x){
-         console.log(x);
-     }
-
-
+    
     render() {
-        var head = this.state.tags.map((tag, index) => 
-            <h1 key={index} className={`tag ${tag.isActive ? 'grow' : ''}`} onClick={()=>{
-                this.setState({ })
-            }} id={tag.id}>{tag.name} </h1>)
-
+        const head = this.state.tags.map((tag, index) => {
+            return(
+        <h2 
+                key={tag.id}
+                className={`tag ${tag.isActive ? 'grow' : 'shrink'}`}
+                onClick={() => this.addTagToState(index, tag)}
+                id={index}>
+                    {tag.name} 
+            </h2>)
+        })
+        
+        
         return (
             <div>
                 <div className="title">
                     {head}
                 </div>
-                <div className=''>
+                <div>
                     <div className="bod">
-                       <Button />
+                       <Button 
+                            selectedTag={this.state.tagSelected} 
+                            newState={(e)=>this.addResult(e)}
+                        />
                     </div>
+                        <TagData 
+                                newOrg={(e)=>this.addResult(e)} 
+                                newTag={(e)=>this.addTags(e)} 
+                        />
+                    
+                </div>
+                
+                <div className='map'>
+                    <Map result={this.state}/>
                 </div>
             </div>
         )
