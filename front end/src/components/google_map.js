@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import {selectedOrg,selectedcoords} from "../obs_store";
+import {selectedOrg,selectedcoords,selectedFilters} from "../obs_store";
 let map;
 let markers = [];
 class GoogleMap extends Component {
@@ -23,8 +23,24 @@ class GoogleMap extends Component {
         clearMarkers();
         markers = [];
       }  
-          deleteMarkers();
+
+      deleteMarkers();
   });
+    selectedFilters.subscribe((k,v) => {
+      function setMapOnAll(map) {
+        for (var i = 0; i < markers.length; i++) {  
+          markers[i].setMap(map);
+        }
+      }
+      function clearMarkers() {
+        setMapOnAll(null);
+      }
+      function deleteMarkers() {
+        clearMarkers();
+        markers = [];
+      }  
+     deleteMarkers();  
+    });
       this.setState({
         markers:[]
       })
