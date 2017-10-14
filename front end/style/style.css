@@ -3,9 +3,29 @@
   margin:0;
   padding:0;
 }
-body {
-  text-align:center;  
+.mar{
+  margin: 5px;
 }
-.container {
-  margin: 50px;
+.sizmap{
+  height: 400px;
+  width: 89%;
+  margin-top: 3%;
+}
+.goomap{
+  position: fixed;
+  right: 1%;
+  top: 3%;
+  width: 65%
+}
+.companies{
+  margin-top:3%
+}
+.tags{
+  position: fixed;
+  right: 15px;
+  top: 475px
+}
+.app{
+  margin-left:4%;
+  margin-top: 4%
 }

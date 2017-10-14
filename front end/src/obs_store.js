@@ -1,11 +1,12 @@
 var observable = function() {
     this.data = {}
+    
     this.subscribers = [];
     
     this.subscribe = (fn) => {
         this.subscribers.push(fn);
     }
-
+    
     this.put = (k,v) => {
         this.data[k] = v;
         for (let subscriber of this.subscribers) {
@@ -19,7 +20,10 @@ var observable = function() {
 }
 
 let selectedFilters = new observable();
+let selectedOrg = new observable();
+let selectedcoords = new observable();
+
 export {
-    observable,selectedFilters
+    observable,selectedFilters,selectedOrg,selectedcoords
     
 }

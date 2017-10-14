@@ -1,17 +1,19 @@
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
-//import { BrowserRouter, Route, Switch } from "react-router-dom";
 import axios from "axios";
-//import _ from "lodash";
-import Checkbox from "./components/checkbox";
+import _ from "lodash";
+import TagsButtons from "./components/tags_buttons";
 import Company from "./components/companies";
 import {observable,selectedFilters} from "./obs_store";
-
+import GoogleMap from "./components/google_map";
 const ROOT_URL = "http://localhost:3090";
 class App extends Component {
   constructor(props) {
     super(props);
-    this.state = {ready: false}
+    this.state = {
+      ready: false,
+      er:""
+    }
   }  
   fetchAllTags(){
     return axios.get(`${ROOT_URL}`)
@@ -27,30 +29,59 @@ class App extends Component {
       self.setState({
          allCompanies: resOrg.data.orgs,
          matchingCompanies: resOrg.data.orgs,
-         possibleFilters: resTags.data,
+         allTags: resTags.data,
          ready:true
       });
-         
-    }));
-  
-  }
-  componentDidMount() {
-    selectedFilters.subscribe((k,v) => {
+    }))
+    .catch((error) => {
+      // Error
+      if (error.response) {
+        self.setState({
+          ready:true,
+         er:`${error.response.status} `
+        })
+          // The request was made and the server responded with a status code
+          // that falls out of the range of 2xx
+          //  console.log(error.response.data);
+          //  console.log(error.response.status);
+          //  console.log(error.response.headers);
+      } else if (error.request) {
+        self.setState({
+          ready:true,
+          er:`${error.request}`
+         })
+          // The request was made but no response was received
+          // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+          // http.ClientRequest in node.js
+          //console.log(error.request);
+      } else {
+        self.setState({
+          ready:true,
+          er:`${error.message}`
+         })
+          // Something happened in setting up the request that triggered an Error
+          console.log('Error', error.message);
+      }
+      console.log(error.config);
       
-          this.forceUpdate();
-          
-    })
-  }
+  });
+}
   render() {
-    if (! this.state.ready){
+    if ( this.state.er.length!== 0 && this.state.ready ){
+      return (
+        <h1>
+           Internal Server Error... {this.state.er}
+        </h1>
+      )
+    }
+    else if (! this.state.ready ){
           return (
             <h1>
                loding.......
             </h1>
-          )
-    };
+          );
+    }
     selectedFilters.subscribe((k,v) => {
-    
       let raw = this.state.allCompanies;
       const matchingCompanies = Object.keys(raw)
       .filter(key => {for (let tag of raw[key].tags) {
@@ -65,25 +96,20 @@ class App extends Component {
       
       this.setState({
         matchingCompanies: matchingCompanies
-        
       })
-      
     })
-  //});
     let myNdata = Object.keys(this.state.matchingCompanies).map(key => {
       return this.state.matchingCompanies[key];
-      console.log(myNdata);
   })
-    let renderCompanies = myNdata.map((e,i) => <Company company={e} key={i} />);
-         console.log(myNdata);
-    console.log(this.state.matchingCompanies);
+    let allTags = _.mapKeys(this.state.allTags,'id');
+    let renderCompanies = myNdata.map((o,i) => <Company key={i} org={o}  allTags = {allTags}/>);
      return (
-          <div>
-           
-           <Checkbox possibleFilters = {this.state.possibleFilters} />
-            {renderCompanies}
+          <div className = 'app'>
+              <div className = 'goomap '> <GoogleMap/> </div >
+              <div className = ' tags'>  <TagsButtons allTags = {this.state.allTags} /> </div>
+              <div className = 'companies'>     {renderCompanies}          </div>
           </div>
-    );     
-  }
+    ); 
+  }    
 }
-ReactDOM.render(<App />, document.querySelector(".container"));
+ReactDOM.render(<App />, document.querySelector(".maimdiv"));
