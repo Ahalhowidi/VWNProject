@@ -98,9 +98,11 @@ class App extends Component {
         matchingCompanies: matchingCompanies
       })
     })
+    //to array
     let myNdata = Object.keys(this.state.matchingCompanies).map(key => {
       return this.state.matchingCompanies[key];
   })
+  //to objects of keys
     let allTags = _.mapKeys(this.state.allTags,'id');
     let renderCompanies = myNdata.map((o,i) => <Company key={i} org={o}  allTags = {allTags}/>);
      return (

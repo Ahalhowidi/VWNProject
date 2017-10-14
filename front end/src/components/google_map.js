@@ -3,12 +3,6 @@ import {selectedOrg,selectedcoords,selectedFilters} from "../obs_store";
 let map;
 let markers = [];
 class GoogleMap extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      markers:markers
-    }
-  }  
   componentWillMount(){
     selectedcoords.subscribe((k,v) => {
       function setMapOnAll(map) {
@@ -21,7 +15,7 @@ class GoogleMap extends Component {
       }
       function deleteMarkers() {
         clearMarkers();
-        markers = [];
+       // markers = [];
       }  
 
       deleteMarkers();
@@ -37,13 +31,9 @@ class GoogleMap extends Component {
       }
       function deleteMarkers() {
         clearMarkers();
-        markers = [];
       }  
      deleteMarkers();  
     });
-      this.setState({
-        markers:[]
-      })
   }
   componentDidMount() {
     map = new google.maps.Map(this.refs.map, {
