@@ -24,10 +24,10 @@ class Observable {
     }
 
     get(dataType, key) {
-        if (!this.data[dataType]) {
+        if (this.data[dataType] === undefined) {
             return false;
         }
-        else if (!this.data[dataType][key]) {
+        else if (this.data[dataType][key] === undefined) {
             return false;
         }
         else {
@@ -36,22 +36,23 @@ class Observable {
     }
 
     getDataType(dataType) {
-        if (!this.data[dataType]) {
-            return false;
+        if (this.data[dataType] !== undefined) {
+            return this.data[dataType];
         }
         else {
-            return this.data[dataType];
+            return false;
         }
     }
 
     notify(action, value) {
         const allowedactions = [
             'tagsSelection',
-            'showOnMap'
+            'showOnMap',
+            'markActiveMenuBarItem'
         ];
         if (allowedactions.indexOf(action) > -1) {
             this.observers.forEach(observer => {
-                observer(action, value ? value : this.data);
+                observer(action, value !== undefined ? value : this.data);
             });
         }
         else {

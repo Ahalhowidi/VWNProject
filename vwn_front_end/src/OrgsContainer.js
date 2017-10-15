@@ -2,14 +2,14 @@ import React, { Component } from 'react';
 
 import Observable from './Observable';
 import OrgDetails from './OrgDetails';
-import Map from './Map';
 
 export default class OrgsContainer extends Component {
 
     constructor() {
         super();
         this.state = {
-            matchingOrgs: {}
+            matchingOrgs: {},
+            companies: false
         };
     }
 
@@ -33,7 +33,7 @@ export default class OrgsContainer extends Component {
                     if (data.selectedTags) {
                         if (data.selectedTags[tag]) {
                             if (!matchingOrg.name) {
-                                matchingOrg = JSON.parse(JSON.stringify(org));
+                                matchingOrg = Object.assign({}, org);
                                 matchingOrg.id = orgId;
                                 matchingOrg.matchingTags = {};
                             }
@@ -46,7 +46,8 @@ export default class OrgsContainer extends Component {
                 }
             });
             this.setState({
-                matchingOrgs: matchingOrgs
+                matchingOrgs: matchingOrgs,
+                companies: data.companies
             });
         }
     }
@@ -54,13 +55,16 @@ export default class OrgsContainer extends Component {
     render() {
         const tags = this.props.tags;
         const matchingOrgs = this.state.matchingOrgs;
-        return <div>
-            <Map matchingOrgs = {matchingOrgs} />
-            <div>
-                {Object.keys(matchingOrgs).map(orgId =>
-                    <OrgDetails key = {orgId} org = {matchingOrgs[orgId]} tags = {tags} />
-                )}
-            </div>
+        const companies = this.state.companies;
+        return <div className ="vericalFlexElement">
+            {Object.keys(matchingOrgs).map(orgId =>
+                <OrgDetails
+                    key = {orgId}
+                    org = {matchingOrgs[orgId]}
+                    tags = {tags}
+                    companies = {companies}
+                />
+            )}
         </div>;
     }
 }

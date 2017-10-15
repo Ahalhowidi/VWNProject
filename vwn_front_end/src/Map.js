@@ -15,7 +15,7 @@ const MyMapComponent = withScriptjs(withGoogleMap(({contacts, name, infoWindow, 
                 title = 'Click for more details'
                 onClick = {() => setInfoWindow(contact.id)}
             >
-            {infoWindow[contact.id] && <InfoWindow onCloseClick = {() => setInfoWindow(contact.id)}><div>
+            {infoWindow[contact.id] && <InfoWindow><div>
                 <strong>{name}</strong><br/>
                 <strong>Post code:</strong> {contact.post_code} {contact.city}<br/>
                 <strong>House number:</strong> {contact.house_number}
@@ -45,35 +45,46 @@ export default class Map extends Component {
         Observable.subscribe(this.showOnMap);
     }
 
-    showOnMap = (action, selectedOrgId) => {
+    showOnMap = (action, {org, contactId}) => {
         if (action === 'showOnMap') {
             this.setState({
-                selectedOrgId: selectedOrgId,
+                selectedOrg: org,
+                contactId: contactId,
                 infoWindow: {}
             });
         }
     }
 
     setInfoWindow = (contactId) => {
-        const copy = Object.assign({}, this.state.infoWindow);
-        copy[contactId] = !copy[contactId];
+        const infoWindow = {};
+        infoWindow[contactId] = true;
         this.setState({
-            selectedOrgId: this.state.selectedOrgId,
-            infoWindow: copy
+            selectedOrg: this.state.selectedOrg,
+            contactId: this.state.contactId,
+            infoWindow: infoWindow
         });
     }
 
     render() {
         let contacts = [];
         let name = '';
-        if (this.state.selectedOrgId) {
-            contacts = this.props.matchingOrgs[this.state.selectedOrgId].contacts;
-            name = this.props.matchingOrgs[this.state.selectedOrgId].name;
+        if (this.state.selectedOrg) {
+            name = this.state.selectedOrg.name;
+            contacts = this.state.selectedOrg.contacts;
+            const contactId = this.state.contactId;
+            if (contactId) {
+                for (let i in contacts) {
+                    if (contacts[i].id === contactId) {
+                        contacts = [contacts[i]]
+                        break;
+                    }
+                }
+            }
         }
         return <MyMapComponent
             googleMapURL = "https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places"
             loadingElement = {<div style={{ height: `100%` }} />}
-            containerElement = {<div style={{ height: `500px` }} />}
+            containerElement = {<div style={{ height: `100%` }} />}
             mapElement = {<div style={{ height: `100%` }} />}
             contacts = {contacts}
             name = {name}

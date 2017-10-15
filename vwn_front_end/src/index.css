@@ -1,23 +1,499 @@
-body {
+html, body, #root, .route, .vericalFlexContainer, .horizontalFlexContainer {
+  height: 100%;
   margin: 0;
   padding: 0;
-  font-family: sans-serif;
 }
-
-.selected_tag {
-  border: 3px solid black;
+body {
+  font-size: 100%;
+  font-family: "Segoe UI", "Source Sans Pro", Calibri, Candara, Arial, sans-serif;
+  font-weight: normal;
 }
-
-span {
+h1 {
+  font-weight: normal;
+  font-size: 2.5em;
+  margin: 50px;
+}
+h2 {
+  font-weight: normal;
+  font-size: 1.5em;
+}
+.orgName {
+  margin: 0px;
+}
+.orgHD {
+  margin: 5px 0px;
+}
+.orgHC {
+  margin: 5px 0px;
+  display: inline-block;
+}
+p {
+  margin: 0px 10px;
+}
+.tagsContainer {
+  background-color: #555555;
+  border-style: outset;
+  border-width: 1px;
+}
+.orgDetails {
+  background-color: white;
+  border-style: outset;
+  border-width: 1px;
   border-radius: 5px;
-  margin: 5px;
+  margin: 10px;
+  padding: 10px;
+  position: relative;
+}
+.contactDetails {
+  margin: 0px 10px;
+  padding: 5px;
+  border-style: inset;
+  border-width: 1px;
+  border-radius: 5px;
+  background-color: #dddddd;
+}
+.centeredContainer {
+  text-align: center;
   padding: 5px;
 }
-
-.normal {
-  border: 1px solid black;
+.vericalFlexContainer {
+  display: flex;
+  flex-flow: column nowrap;
+}
+.horizontalFlexContainer {
+  display: flex;
+  flex-flow: row nowrap;
+}
+.vericalFlexElement{
+  overflow-y: auto;
+  background-color: #bbbbbb;
+  border-style: solid;
+  border-color: #555555;
+  border-width: 0px 1px;
+}
+.horizontalFlexElement {
+  width: 50%;
+}
+.menuBar {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #333333;
+  border-style: outset;
+  border-width: 1px;
+}
+.menuBarItem {
+  float: left;
+  color: white;
+  padding: 20px;
+}
+.menuBarItem:hover:not(.activeMenuBarItem) {
+  background-color: #111111;
+  cursor: pointer;
+}
+.activeMenuBarItem {
+  background-color: #4CAF50;
+  cursor: default;
+}
+.btn {
+  font-size: 0.8em;
+  outline: 0px;
+  margin: 2px;
+  padding: 10px;
+  border-radius: 7px;
+  border-width: 1px;
+  color: white;
+  background-color: #333333;
+  cursor: pointer;
+}
+.btn:hover, .toggleBtnSelected {
+  background-color: #111111;
+}
+.btn:active {
+  border-color: rgb(0,0,0);
+}
+.toggleButtonLeft {
+  border-radius: 7px 0px 0px 7px;
+}
+.toggleButtonRight {
+  border-radius: 0px 7px 7px 0px;
+  margin-left: -4px;
+}
+.btn1 {
+  background-color: rgb(255,0,0);
+  border-color:  rgb(170,0,0);
+}
+.btn1:hover {
+  background-color: rgb(170,0,0);
+  border-color: rgb(85,0,0);
+}
+.btn1:active {
+  background-color: rgb(85,0,0);
 }
 
-.focused {
-  border: 3px solid black;
+.btn2 {
+  background-color: rgb(0,85,0);
+  border-color:  rgb(0,55,0);
+}
+.btn2:hover {
+  background-color: rgb(0,55,0);
+  border-color: rgb(0,30,0);
+}
+.btn2:active {
+  background-color: rgb(0,30,0);
+}
+
+.btn3 {
+  background-color: rgb(255,128,0);
+  border-color:  rgb(170,85,0);
+}
+.btn3:hover {
+  background-color: rgb(170,85,0);
+  border-color: rgb(85,43,0);
+}
+.btn3:active {
+  background-color: rgb(85,43,0);
+}
+
+.btn4 {
+  background-color: rgb(0,0,255);
+  border-color:  rgb(0,0,170);
+}
+.btn4:hover {
+  background-color: rgb(0,0,170);
+  border-color: rgb(0,0,85);
+}
+.btn4:active {
+  background-color: rgb(0,0,85);
+}
+
+.btn5 {
+  background-color: rgb(128,0,128);
+  border-color:  rgb(85,0,85);
+}
+.btn5:hover {
+  background-color: rgb(85,0,85);
+  border-color: rgb(43,0,43);
+}
+.btn5:active {
+  background-color: rgb(43,0,43);
+}
+
+.btn6 {
+  background-color: rgb(0,170,170);
+  border-color:  rgb(0,85,85);
+}
+.btn6:hover {
+  background-color: rgb(0,85,85);
+  border-color: rgb(0,43,43);
+}
+.btn6:active {
+  background-color: rgb(0,43,43);
+}
+
+.btn7 {
+  background-color: rgb(255,0,128);
+  border-color:  rgb(170,0,85);
+}
+.btn7:hover {
+  background-color: rgb(170,0,85);
+  border-color: rgb(85,0,43);
+}
+.btn7:active {
+  background-color: rgb(85,0,43);
+}
+
+.btn8 {
+  background-color: rgb(255,255,0);
+  border-color:  rgb(170,170,0);
+  color: black;
+}
+.btn8:hover {
+  background-color: rgb(170,170,0);
+  border-color: rgb(85,85,0);
+  color: white;
+}
+.btn8:active {
+  background-color: rgb(85,85,0);
+  color: white;
+}
+
+.btn9 {
+  background-color: rgb(0,170,0);
+  border-color:  rgb(0,115,0);
+}
+.btn9:hover {
+  background-color: rgb(0,115,0);
+  border-color: rgb(0,60,0);
+}
+.btn9:active {
+  background-color: rgb(0,60,0);
+}
+
+.btn10 {
+  background-color: rgb(170,0,85);
+  border-color:  rgb(115,0,55);
+}
+.btn10:hover {
+  background-color: rgb(115,0,55);
+  border-color: rgb(55,0,30);
+}
+.btn10:active {
+  background-color: rgb(55,0,30);
+}
+
+.btn11 {
+  background-color: rgb(170,170,255);
+  border-color:  rgb(115,115,170);
+}
+.btn11:hover {
+  background-color: rgb(115,115,170);
+  border-color: rgb(55,55,85);
+}
+.btn11:active {
+  background-color: rgb(55,55,85);
+}
+
+.btn12 {
+  background-color: rgb(0,255,0);
+  border-color:  rgb(0,170,0);
+  color: black;
+}
+.btn12:hover {
+  background-color: rgb(0,170,0);
+  border-color: rgb(0,85,0);
+  color: white;
+}
+.btn12:active {
+  background-color: rgb(0,85,0);
+  color: white;
+}
+
+.btn13 {
+  background-color: rgb(128,0,255);
+  border-color:  rgb(85,0,170);
+}
+.btn13:hover {
+  background-color: rgb(85,0,170);
+  border-color: rgb(43,0,85);
+}
+.btn13:active {
+  background-color: rgb(43,0,85);
+}
+
+.btn14 {
+  background-color: rgb(255,0,255);
+  border-color:  rgb(170,0,170);
+}
+.btn14:hover {
+  background-color: rgb(170,0,170);
+  border-color: rgb(85,0,85);
+}
+.btn14:active {
+  background-color: rgb(85,0,85);
+}
+
+.btn15 {
+  background-color: rgb(170,170,170);
+  border-color:  rgb(85,85,85);
+}
+.btn15:hover {
+  background-color: rgb(85,85,85);
+  border-color: rgb(0,0,0);
+}
+.btn15:active {
+  background-color: rgb(0,0,0);
+}
+
+.btn16 {
+  background-color: rgb(128,0,0);
+  border-color:  rgb(85,0,0);
+}
+.btn16:hover {
+  background-color: rgb(85,0,0);
+  border-color: rgb(43,0,0);
+}
+.btn16:active {
+  background-color: rgb(43,0,0);
+}
+
+.btn17 {
+  background-color: rgb(170,255,170);
+  border-color:  rgb(115,170,115);
+  color: black;
+}
+.btn17:hover {
+  background-color: rgb(115,170,115);
+  border-color: rgb(55,85,55);
+  color: white;
+}
+.btn17:active {
+  background-color: rgb(55,85,55);
+  color: white;
+}
+
+.btn18 {
+  background-color: rgb(0,255,255);
+  border-color:  rgb(0,170,170);
+  color: black;
+}
+.btn18:hover {
+  background-color: rgb(0,170,170);
+  border-color: rgb(0,85,85);
+  color: white;
+}
+.btn18:active {
+  background-color: rgb(0,85,85);
+  color: white;
+}
+
+.btn19 {
+  background-color: rgb(255,170,170);
+  border-color:  rgb(170,115,115);
+  color: black;
+}
+.btn19:hover {
+  background-color: rgb(170,115,115);
+  border-color: rgb(85,55,55);
+  color: white;
+}
+.btn19:active {
+  background-color: rgb(85,55,55);
+  color: white;
+}
+
+.btn20 {
+  background-color: rgb(128,128,0);
+  border-color:  rgb(85,85,0);
+}
+.btn20:hover {
+  background-color: rgb(85,85,0);
+  border-color: rgb(43,43,0);
+}
+.btn20:active {
+  background-color: rgb(43,43,0);
+}
+.btnSelected {
+  box-shadow: 0px 0px 35px black;
+  border-width: 3px ;
+  border-color: black;
+}
+.tagsConntainer{
+  display: flex;
+  flex-flow: row wrap;
+}
+.tag {
+  font-size: 0.8em;
+  border-radius: 5px;
+  margin: 2px;
+  padding: 5px;
+  color: white;
+}
+.tagSelected{
+  border: 2px solid black;
+}
+.tag1 {
+  background-color: rgb(255,0,0);
+}
+.tag2 {
+  background-color: rgb(0,85,0);
+}
+.tag3 {
+  background-color: rgb(255,128,0);
+}
+.tag4 {
+  background-color: rgb(0,0,255);
+}
+.tag5 {
+  background-color: rgb(128,0,128);
+}
+.tag6 {
+  background-color: rgb(0,170,170);
+}
+.tag7 {
+  background-color: rgb(255,0,128);
+}
+.tag8 {
+  background-color: rgb(255,255,0);
+  color: black;
+}
+.tag9 {
+  background-color: rgb(0,170,0);
+}
+.tag10 {
+  background-color: rgb(170,0,85);
+}
+.tag11 {
+  background-color: rgb(170,170,255);
+}
+.tag12 {
+  background-color: rgb(0,255,0);
+  color: black;
+}
+.tag13 {
+  background-color: rgb(128,0,255);
+}
+.tag14 {
+  background-color: rgb(255,0,255);
+}
+.tag15 {
+  background-color: rgb(170,170,170);
+}
+.tag16 {
+  background-color: rgb(128,0,0);
+}
+.tag17 {
+  background-color: rgb(170,255,170);
+  color: black;
+}
+.tag18 {
+  background-color: rgb(0,255,255);
+  color: black;
+}
+.tag19 {
+  background-color: rgb(255,170,170);
+  color: black;
+}
+.tag20 {
+  background-color: rgb(128,128,0);
+}
+.btnSmall {
+  outline: 0px;
+  margin: 2px;
+  padding: 5px;
+  border-radius: 7px;
+  border-width: 1px;
+  color: white;
+  background-color: #333333;
+  cursor: pointer;
+  position: absolute;
+  right: 30px;
+}
+.btnSmall:hover {
+  background-color: #111111;
+}
+.btnSmall:active {
+  border-color: rgb(0,0,0);
+}
+.btnSmallAll{
+  margin-top: 15px;
+}
+.bbb {
+  border: 5px solid red;
+}
+.loader {
+  width: 120px;
+  height: 120px;
+  border-top: 16px solid #222222;
+  border-right: 16px solid #666666;
+  border-bottom: 16px solid #aaaaaa;
+  border-left: 16px solid #eeeeee;
+  border-radius: 50%;
+  animation: spin 2s linear infinite;
+  margin: auto;
+ }
+ @keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
