@@ -4,6 +4,7 @@ import TagData from './Component/tagdata'
 // import Results from './Component/results'
 import Map from './Component/map'
 import './new_app.css'
+// import Observ from './component/obj'
 
 
 export default class App extends Component {
@@ -50,8 +51,7 @@ export default class App extends Component {
         let arr=[];
         tagArr.map((e,i)=>{
             obj = {
-                id: i+1,
-                name: e
+                 org:e
             }
             arr.push(obj);
         });
@@ -81,12 +81,14 @@ export default class App extends Component {
                 <div>
                     <div className="bod">
                        <Button 
-                            selectedTag={this.state.tagSelected} 
-                            newState={(e)=>this.addResult(e)}
+                            tagSelected={this.state.tagSelected} 
+                            result={this.state.result}
+                            newOrg={(e)=>this.addResult(e)}
+                            
                         />
                     </div>
                         <TagData 
-                                newOrg={(e)=>this.addResult(e)} 
+                                 
                                 newTag={(e)=>this.addTags(e)} 
                         />
                     

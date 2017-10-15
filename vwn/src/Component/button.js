@@ -1,34 +1,23 @@
 import React, { Component } from 'react';
 // import ReactDOM from 'react-dom';
 import '../new_app.css';
+import Observ from './obs'
 
 export default class Buttons extends Component {
     
-    newRequest = () => {
-        const request = new XMLHttpRequest();
-        request.onreadystatechange = (e) => {
-            if (request.readyState !== 4) {
-                return;
-            }
-            if (request.status === 200) {
-                var parsedInfo = JSON.parse(request.response);
-               
-                 this.props.newState(parsedInfo);
-            } else {
-                console.warn('errodr');
-            }
-        };
-        const searchTags = this.props.selectedTag;
-        
-        let x = 'search?';
-        searchTags.map((tag, index) =>
-            x += `tag=${tag}&`
-        )
-        
-
-        request.open('GET', `http://localhost:8080/${x}`, true);
-        request.send();
-    }
+    newFilter = () => {
+        console.log(this.props)
+        let obj =[];
+        Observ.all.map((e, ind)=>{
+            e.name.tags.map((e,i)=>{
+                e === this.props.tagSelected[i] ? 
+                   obj.push(Observ.all[ind].name) : console.log(false);
+            })
+        }
+    )
+    console.log(obj)
+    this.props.newOrg(obj)
+       }
 
 
 
@@ -42,7 +31,7 @@ export default class Buttons extends Component {
                     <div>
                             
                         <button
-                            onClick={this.newRequest}>
+                            onClick={this.newFilter}>
                                 New Commers
                         </button>
                             
