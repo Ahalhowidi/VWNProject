@@ -1,89 +1,116 @@
-body{
-    background-color: #3033D8;
+body {
+    background-color: rgb(113, 117, 248);
 }
 
-h1{
+h1 {
     color: #F8EFEF;
-    /* font-size: 1.5em; */
-    
-    text-shadow:
-    -1px -1px 0 #000,
-    3px -1px 0 #000,
-    -1px 1px 0 #000,
-    1px 1px 0 #000; 
-    
+    margin-bottom:0;
+    text-shadow: -1px -1px 0 #000, 3px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
 }
-h2{
+
+h2 {
     color: #F8EFEF;
-    /* font-size: 1em; */
-    
-    text-shadow:
-    -1px -1px 0 #000,
-    3px -1px 0 #000,
-    -1px 1px 0 #000,
-    1px 1px 0 #000; 
-    
+    text-shadow: -1px -1px 0 #000, 3px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
 }
-.grow{
+
+.grow {
     transition: .3s;
     color: #FF2600;
     font-size: 2em;
-    
 }
 
-.shrink{
+.shrink {
     transition: .3s;
     color: #F8EFEF;
-    /* font-size: -1em; */
-
+    font-size: -2em;
 }
-
-.title{
-    /* margin-top: 3em; */
+.tagAvail{
+    color : green;
+    
+    
+}
+.haeder{
+    padding-top: 10px;
+    background-color: rgb(252, 212, 80);
+    text-align: center;
+}
+.tags {
     display: flex;
     justify-content: space-around;
     margin-bottom: -25px;
-    background-color: #FFC400;
 }
 
-.bod{
-    background-color: #3033D8;
+/* .bod {
+    background-color: rgb(58, 67, 248);
     height: 400px;
-}
+} */
 
 
-button{
+button {
     background-color: #5B5DD8;
-    color: white;
     border: 2px solid white;
+    color: white;
     font-size: 1em;
     border-radius: 5px;
-    margin: 2em;
-    width:10em;
-    height:3em;
+    margin: .5em;
+    width: 10em;
+    height: 3em;
     cursor: pointer;
-  }
-  button:hover{
+}
+
+button:hover {
     background-color: #FFCACA;
     color: #362B1B;
-  }
+}
 
-  .bod{
-    /* margin-top: 5em; */
+.bod {
     display: flex;
     justify-content: center;
-    height:auto;
-  }
+    height: auto;
+}
 
-  .top{
-    
+.clear {
+    transition: 1s;  
+    height: 0;
+}
+.top {
     text-align: center;
-    padding:2em;
-   
-  }
+}
 
-  .map{
-      width:100%;
-      height: 400px;
-      background-color: white;
-  }
+.bulb {
+    color: red;
+}
+
+.bulb:hover {
+    width: 40px;
+    size: 3em;
+    background-color: black;
+}
+.map {
+    width: clac(100% - 250px);
+    height: calc(100vh - 240px);
+    position: relative;
+}
+
+.googleMap{
+    height: 100%;
+}
+.orgList {
+    width: 250px;
+    height: calc(100% - 40px);
+    padding-left: 20px;
+    left: 20px;
+    top: 20px;
+    opacity: .9;
+    background-color: #DADBFD;
+    border-radius: 10px;
+    position:absolute; 
+    overflow: auto;
+    border: 2px solid #3033D8;
+}
+
+.orgItem{
+    width: 90%;
+    color: black;
+    border-bottom: 1px solid silver;
+}

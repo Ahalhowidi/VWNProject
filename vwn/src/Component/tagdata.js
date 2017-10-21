@@ -5,16 +5,16 @@ import Observ from './obs';
 export default class TagData extends Component{
 
   addAll(result){
-    const tagArr = Object.values(result); 
-    let obj={}; 
-    let arr=[];
-    tagArr.map((e,i)=>{
-        obj = {
-            name: e
-        }
-        arr.push(obj);
-    });
-    Observ.all=(arr)
+    const orgArr = Object.values(result); 
+    // let obj={}; 
+    // let arr=[];
+    // tagArr.map((e,i)=>{
+    //     obj = {
+    //         name: e
+    //     }
+    //     arr.push(obj);
+    // });
+    Observ.all= orgArr
 }
   
   componentWillMount(){
@@ -35,7 +35,6 @@ export default class TagData extends Component{
     request.open('GET', 'http://localhost:8080/search', true);
     
     request.send();
-    console.log(Observ);
    }
 
     render(){

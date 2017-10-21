@@ -25,7 +25,7 @@
     constructor() {
       this.filter=[];
       this.all = [];
-      this.result =[];
+      this.result ={};
       this.observers = [];
     }
   
@@ -37,10 +37,10 @@
       this.observers = this.observers.filter(subscriber => subscriber !== f);
     }
   
-    notify(data) {
-      this.observers.forEach(observer => observer(data));
+    notify(...data) {
+      this.observers.forEach(observer => observer(...data));
     }
   }
-
+console.log(this.observers);
   let Observ = new Observable();
   export default Observ;

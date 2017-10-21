@@ -2,43 +2,45 @@ import React, { Component } from 'react';
 // import ReactDOM from 'react-dom';
 import '../new_app.css';
 import Observ from './obs'
+import CompList from './complist'
 
 export default class Buttons extends Component {
-    
+
     newFilter = () => {
-        console.log(this.props)
-        let obj =[];
-        Observ.all.map((e, ind)=>{
-            e.name.tags.map((e,i)=>{
-                e === this.props.tagSelected[i] ? 
-                   obj.push(Observ.all[ind].name) : console.log(false);
+        const button=document.querySelectorAll('.but')
+        button[0].classList.add('clear')
+        button[1].classList.add('clear')
+        let obj = [];
+        Observ.all.map((e, ind) => {
+            e.tags.map((e, i) => {
+                e === this.props.tagSelected[i] ?
+                    obj.push(Observ.all[ind]) : console.log(false);
             })
-        }
-    )
-    console.log(obj)
-    this.props.newOrg(obj)
-       }
+        })
+        this.props.newOrg(obj)
+       Observ.all=obj;
+       
+
+    }
 
 
 
     render() {
-        
         return (
-
             <div className='top'>
-                <h1>Welcome to VWN website</h1>
                 <div className="bod">
                     <div>
-                            
                         <button
+                            className="but"
                             onClick={this.newFilter}>
-                                New Commers
+                            New Commers
                         </button>
-                            
                     </div>
                     <div>
-                        <button  >Provider</button>
-                        
+                        <button  
+                            className='but'
+                        >
+                        Provider</button>
                     </div>
                 </div>
             </div>
