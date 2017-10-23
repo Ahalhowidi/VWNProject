@@ -5,10 +5,11 @@ body {
 h1 {
     color: #F8EFEF;
     margin-bottom:0;
+    margin-top: 10px;
     text-shadow: -1px -1px 0 #000, 3px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
 }
 
-h2 {
+h3 {
     color: #F8EFEF;
     text-shadow: -1px -1px 0 #000, 3px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
 }
@@ -16,16 +17,16 @@ h2 {
 .grow {
     transition: .3s;
     color: #FF2600;
-    font-size: 2em;
+    font-size: 1.6em;
 }
 
 .shrink {
     transition: .3s;
     color: #F8EFEF;
-    font-size: -2em;
+    font-size: 1.1em;
 }
 .tagAvail{
-    color : green;
+    color : #048fdf;
     
     
 }
@@ -40,6 +41,10 @@ h2 {
     margin-bottom: -25px;
 }
 
+.tag{
+    margin-top: 5px;
+}
+
 /* .bod {
     background-color: rgb(58, 67, 248);
     height: 400px;
@@ -52,7 +57,7 @@ button {
     color: white;
     font-size: 1em;
     border-radius: 5px;
-    margin: .5em;
+    margin: 1em;
     width: 10em;
     height: 3em;
     cursor: pointer;
@@ -70,8 +75,13 @@ button:hover {
 }
 
 .clear {
-    transition: 1s;  
-    height: 0;
+    transition: .5s;  
+    height: 0px;
+    border: 0px solid white;
+    margin: 0;
+    background-color: rgb(252, 212, 80);
+    color: rgb(252, 212, 80);
+    font-size: 0
 }
 .top {
     text-align: center;
@@ -88,7 +98,7 @@ button:hover {
 }
 .map {
     width: clac(100% - 250px);
-    height: calc(100vh - 240px);
+    height: calc(100vh - 180px);
     position: relative;
 }
 

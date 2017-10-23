@@ -6,7 +6,9 @@ import CompList from './complist'
 
 export default class Buttons extends Component {
 
-    newFilter = () => {
+    newFilter = (type) => {
+        this.props.setType(type);
+        console.log(this.props)
         const button=document.querySelectorAll('.but')
         button[0].classList.add('clear')
         button[1].classList.add('clear')

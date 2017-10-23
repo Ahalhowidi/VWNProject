@@ -13,7 +13,8 @@ export default class App extends Component {
         tags: [],
         tagSelected: [],
         result: [],
-        ready: false
+        ready: false,
+        type: 0
     };
 
     addTagToState = (index, tag) => {
@@ -53,16 +54,20 @@ export default class App extends Component {
         })
     }
 
+    setType(type){
+        this.setState({type})
+    }
+
     render() {
         const head = this.state.tags.map((tag, index) => {
             return (
-                <h2
+                <h3
                     key={tag.id}
                     className={`tag ${tag.isActive ? 'grow' : 'shrink'}`}
                     onClick={() => this.addTagToState(index, tag)}
                     id={index}>
                     {tag.name}
-                </h2>)
+                </h3>)
         })
 
 
@@ -79,6 +84,8 @@ export default class App extends Component {
                         <Button
                             tagSelected={this.state.tagSelected}
                             result={this.state.result}
+                            type = {this.state.type}
+                            setType ={(e)=>this.setType(e)}
                             newOrg={(e) => this.addResult(e)}
                         />
                     </div>

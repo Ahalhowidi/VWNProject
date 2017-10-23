@@ -15,6 +15,8 @@ export default class CompList extends Component {
     }
 
     moreList(item) {
+        Observ.notify(null);
+        console.log(item)
         const tagsClass = document.querySelectorAll('.tag');
         for (let i = 0; i < tagsClass.length; i++) {
             tagsClass[i].classList.remove('tagAvail');
@@ -25,6 +27,7 @@ export default class CompList extends Component {
         item.contacts.map((e, i) => {
             Observ.notify(e.latitude, e.longitude)
         })
+
     }
 
     render() {
@@ -36,17 +39,19 @@ export default class CompList extends Component {
                 })
                 return (
                     <div className="orgItem" key={i} onClick={(e) => this.moreList(Observ.all[i])}>
-                        <h3>{e.name}</h3>
+                        <h4>{e.name}</h4>
+                        <p>{e.description_person}</p>
                     </div>)
             })
         } else return (
             list = <div className="orgItem" >
-                <h3>Loadding...</h3>
+                <h4>Loadding...</h4>
             </div>)
         return (
             <div className='orgList'>
-                <h3 className="listItem">{list}</h3>
+                {list}
             </div>
+            
         )
     }
 }
