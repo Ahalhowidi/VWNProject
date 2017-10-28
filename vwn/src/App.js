@@ -22,15 +22,12 @@ export default class App extends Component {
         Observ.all = orgArr;
         Observ.ready = true;
         this.setState({result: orgArr})
-    
-    
       }
     
       componentWillMount() {
         const request = new XMLHttpRequest();
         request.onreadystatechange = (e) => {
-          if (request.readyState !== 4) {
-    
+          if (request.readyState !== 4) {  
             return;
           }
           if (request.status === 200) {
@@ -50,27 +47,21 @@ export default class App extends Component {
       }
 
     
-    // componentWillMount(){
-    //     this.setState({result: Observ.all});
-    // }
     addTagToState = (index, tag) => {
-        this.setState({result:[]});
-        const res = [];
-        const tags = this.state.tags,
-            tagSelected = this.state.tagSelected;
+        // this.setState({result:[]});
+        let res = [];
+        const tags = this.state.tags;
+        const tagSelected = this.state.tagSelected;
 
         tags[index].isActive = !tags[index].isActive;
         this.setState({ tags });
-        const indexTag = tagSelected.indexOf(tag.id);
-
-        
+        const indexTag = tagSelected.indexOf(tag.id+1);
         tags[index].isActive ? tagSelected.push(tag.id+1) : tagSelected.splice(indexTag, 1);
-        // console.log(indexTag, tagSelected, tag.id)
         this.setState({ tagSelected });
         ///////////////////////////////////////////
         Observ.all.map((e, ind) => {
             e.tags.map((item) => {
-                 this.state.tagSelected.forEach((element)=>{
+                 tagSelected.forEach((element)=>{
                      element === item ?
                      res.push(Observ.all[ind]) : console.log(false);
                     });
@@ -79,6 +70,10 @@ export default class App extends Component {
         
         // this.addResult(obj)
         // Observ.result=obj;
+        // (this.state.tagSelected)
+        // console.log(this.state.tagSelected)
+        console.log(tagSelected);
+        (!res[0] && !tagSelected[0]) ? res = Observ.all.slice(0) : console.log('fale')
         this.setState({result: res})
         }
 
@@ -99,7 +94,6 @@ export default class App extends Component {
     }
 
     addResult(result) {
-
         this.setState({
             result,
             ready: true
@@ -142,9 +136,7 @@ export default class App extends Component {
                             newOrg={(e) => this.addResult(e)}
                         />
                     </div>
-                    {/* <TagData
-                        newTag={(e) => this.addTags(e)}
-                    /> */}
+                    
                 </div>
                 <div className='map'>
                     <Map

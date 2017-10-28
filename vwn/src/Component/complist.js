@@ -17,8 +17,7 @@ selectlist=(id)=>{
     
 
     moreList(item) {
-        // Observ.notify(null);
-        // console.log(i);
+
         const tagsClass = document.querySelectorAll('.tag');
         for (let i = 0; i < tagsClass.length; i++) {
             tagsClass[i].classList.remove('tagAvail');
