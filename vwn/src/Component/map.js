@@ -1,40 +1,63 @@
 import React, { Component } from 'react';
-import Observ from './obs'
-import '../new_app.css'
+import Observ from './obs';
+import '../new_app.css';
 const google = window.google;
-
 export default class Map extends Component {
+  constructor() {
+    super();
+     this.infoWindows = [];
+    this.markers = [];
+  }
+
   componentDidMount() {
-    let markers = []
-    let map = new google.maps.Map(this.refs.maps, {
+
+    this.map = new google.maps.Map(this.mapDiv, {
       center: { lat: 52.0705, lng: 4.3007 },
-      zoom: 7,
+      zoom: 6
+    });
+    
+  }
+
+  componentDidUpdate() {
+    const map = this.map;
+    this.markers.forEach((marker)=>{
+      marker.setMap(null);
+    })
+    this.markers = [];
+    this.props.result.map((e) => {
+      e.contacts.map((item) => {
+        const marker = new google.maps.Marker({
+          position: { lat: item.latitude, lng: item.longitude },
+          map: this.map
+        });
+        this.markers.push(marker);
+        marker.addListener('click', () => {
+          console.log(item);
+          Observ.notify(item.id);
+          this.infoWindows.forEach((element) => {
+            element.setMap(null);
+          });
+          
+          this.infoWindows = [];
+          const infoWindow = new google.maps.InfoWindow({
+            content: `<h3>${e.name}</h3>` 
+          });
+          infoWindow.open(this.map, marker);
+          this.infoWindows.push(infoWindow);
+        });
+        
+      });
     });
 
-    let showMark = (lat, lng) => {
-      const pos = new google.maps.LatLng(lat, lng)
-      
-      let marker =  new google.maps.Marker({
-        position: pos,
-        map: map,
-      })
-      
-      console.log(marker)
-      if (!lat) {
-        marker = null;
-        
-        console.log(marker)
-      } else {
-        marker.setMap(map)
-        
-      }
-    }
-   Observ.subscribe(showMark)
+    //     if(e === element.id) element.icon = 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png'
+    //   })
+    // })
+    // console.log(markers)
   }
   render() {
-    return (
-      <div ref="maps" className="googleMap"></div>
 
+    return (
+      <div ref={text => this.mapDiv = text} className="googleMap"></div>
     )
   }
 }

@@ -1,5 +1,5 @@
 body {
-    background-color: rgb(113, 117, 248);
+    background-color: #7175f8;
 }
 
 h1 {
@@ -9,15 +9,17 @@ h1 {
     text-shadow: -1px -1px 0 #000, 3px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
 }
 
-h3 {
+h5 {
     color: #F8EFEF;
-    text-shadow: -1px -1px 0 #000, 3px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+    /* text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000; */
 }
+
 
 .grow {
     transition: .3s;
-    color: #FF2600;
-    font-size: 1.6em;
+    color: rgb(255, 196, 0);
+    font-size: 1.3em;
+    border-bottom: 2px solid black;
 }
 
 .shrink {
@@ -30,9 +32,12 @@ h3 {
     
     
 }
+
+
+
 .haeder{
     padding-top: 10px;
-    background-color: rgb(252, 212, 80);
+    background-color: #e03939;
     text-align: center;
 }
 .tags {
@@ -43,6 +48,7 @@ h3 {
 
 .tag{
     margin-top: 5px;
+    margin-bottom: 20px;
 }
 
 /* .bod {
@@ -61,6 +67,7 @@ button {
     width: 10em;
     height: 3em;
     cursor: pointer;
+    box-shadow: 4px 4px 8px #4d4d4d;
 }
 
 button:hover {
@@ -106,7 +113,7 @@ button:hover {
     height: 100%;
 }
 .orgList {
-    width: 250px;
+    width: 300px;
     height: calc(100% - 40px);
     padding-left: 20px;
     left: 20px;
@@ -120,7 +127,27 @@ button:hover {
 }
 
 .orgItem{
-    width: 90%;
+    width: 95%;
     color: black;
-    border-bottom: 1px solid silver;
+    border-bottom: 1px solid #555555;
+}
+
+.desc{
+    /* height: calc(100vh - 40px); */
+    height: 30px;
+    text-align: justify;
+    overflow: hidden;
+    /* text-justify: inter-word; */
+    /* background-color: white; */
+}
+
+.more{
+    height: auto;
+}
+
+.logo{
+    float: right;
+    width: 20%;
+    border: 1px solid #5B5DD8;
+    box-shadow: 2px 2px 5px #7a7a7a;
 }

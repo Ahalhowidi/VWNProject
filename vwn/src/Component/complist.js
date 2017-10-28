@@ -1,57 +1,71 @@
 import React, { Component } from 'react';
 import '../new_app.css';
-import Observ from './obs'
+import Observ from './obs';
 
 export default class CompList extends Component {
 
-
+selectlist=(id)=>{
+    console.log(id)
+}
     componentWillMount() {
-        Observ.all.map((e, i) => {
-            e.contacts.map((item, index) => {
-                console.log(item.latitude, item.longitude)
-                Observ.notify(item.latitude, item.longitude)
-            })
-        })
+        Observ.subscribe(this.selectlist)
     }
 
+    componentWillUnmount(){
+        Observ.unsubscribe(this.selectlist)
+    }
+    
+
     moreList(item) {
-        Observ.notify(null);
-        console.log(item)
+        // Observ.notify(null);
+        // console.log(i);
         const tagsClass = document.querySelectorAll('.tag');
         for (let i = 0; i < tagsClass.length; i++) {
             tagsClass[i].classList.remove('tagAvail');
         }
-        item.tags.map((e, i) => {
+        item.tags.map((e) => {
             tagsClass[e - 1].classList.add('tagAvail')
+        });
+        Observ.selectedListMarker =[];
+        item.contacts.map((e)=>{
+            Observ.selectedListMarker.push(e.id)
         })
-        item.contacts.map((e, i) => {
-            Observ.notify(e.latitude, e.longitude)
-        })
+         console.log(Observ.selectedListMarker)
 
     }
 
-    render() {
-        let list;
-        if (Observ.all[1]) {
-            list = Observ.all.map((e, i) => {
-                e.contacts.map((item, index) => {
-                    Observ.notify(item.latitude, item.longitude)
-                })
+    list() {
+        let listItem;
+            listItem = this.props.result.map((e, i) => {
                 return (
-                    <div className="orgItem" key={i} onClick={(e) => this.moreList(Observ.all[i])}>
-                        <h4>{e.name}</h4>
-                        <p>{e.description_person}</p>
-                    </div>)
-            })
-        } else return (
-            list = <div className="orgItem" >
-                <h4>Loadding...</h4>
-            </div>)
+                    <div
+                        className="orgItem"
+                        onClick={() => this.moreList(this.props.result[i])}
+                        key={i}>
+                        <div className="listTitle">
+                            <h4>{e.name}<img className='logo' src={e.logo}/></h4>                         
+                        </div>
+                        <div className="desc">
+                            <p>{e.tags}{e.description_company}</p>
+                            <p>Phone: {e.contacts[0].phone}</p>
+                            <p>{e.contacts[0].email}</p>
+                            <a href={e.contacts[0].web} target="_blank">{e.contacts[0].web}</a>
+                        </div>
+                    </div>
+                );
+            });
+            return listItem;
+        } 
+    
+
+
+    render() {
+
         return (
             <div className='orgList'>
-                {list}
+                {this.list()}
             </div>
-            
+
         )
     }
 }

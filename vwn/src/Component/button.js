@@ -6,25 +6,22 @@ import CompList from './complist'
 
 export default class Buttons extends Component {
 
-    newFilter = (type) => {
-        this.props.setType(type);
-        console.log(this.props)
-        const button=document.querySelectorAll('.but')
-        button[0].classList.add('clear')
-        button[1].classList.add('clear')
-        let obj = [];
-        Observ.all.map((e, ind) => {
-            e.tags.map((e, i) => {
-                e === this.props.tagSelected[i] ?
-                    obj.push(Observ.all[ind]) : console.log(false);
-            })
-        })
-        this.props.newOrg(obj)
-       Observ.all=obj;
+    // newFilter = () => {
+        
+    //     let obj = [];
+    //     Observ.all.map((e, ind) => {
+    //         e.tags.map((e, i) => {
+    //             e === this.props.tagSelected[i] ?
+    //                 obj.push(Observ.all[ind]) : console.log(false);
+    //         })
+    //     })
+    //     this.props.newOrg(obj)
+    //    Observ.all=obj;
        
 
-    }
+    // }
 
+   
 
 
     render() {
