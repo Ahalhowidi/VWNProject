@@ -1,5 +1,5 @@
 body {
-    background-color: #7175f8;
+    background-color: rgb(248, 175, 38);
 }
 
 h1 {
@@ -10,21 +10,21 @@ h1 {
 }
 
 h5 {
-    color: #F8EFEF;
-    /* text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000; */
+    color: #ffc400;
+    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
 }
 
 
 .grow {
     transition: .3s;
-    color: rgb(255, 196, 0);
+    color: #ff3300;
     font-size: 1.3em;
     border-bottom: 2px solid black;
 }
 
 .shrink {
     transition: .3s;
-    color: #F8EFEF;
+    color: rgb(243, 197, 46);
     font-size: 1.1em;
 }
 .tagAvail{
@@ -37,7 +37,7 @@ h5 {
 
 .haeder{
     padding-top: 10px;
-    background-color: #e03939;
+    background-color: #91a5e5;
     text-align: center;
 }
 .tags {
@@ -128,20 +128,26 @@ button:hover {
 
 .orgItem{
     width: 95%;
+    
     color: black;
     border-bottom: 1px solid #555555;
 }
 
 .desc{
-    /* height: calc(100vh - 40px); */
-    height: 30px;
-    text-align: justify;
+    height: 18px;
     overflow: hidden;
+    /* height: calc(100vh - 40px); */
+    
+    text-align: justify;
+    
+    margin-bottom: 10px;
     /* text-justify: inter-word; */
     /* background-color: white; */
+    transition: 1s;
 }
 
 .more{
+    
     height: auto;
 }
 

@@ -21,61 +21,63 @@ export default class App extends Component {
         const orgArr = Object.values(result);
         Observ.all = orgArr;
         Observ.ready = true;
-        this.setState({result: orgArr})
-      }
-    
-      componentWillMount() {
+        this.setState({ result: orgArr })
+    }
+
+    componentWillMount() {
         const request = new XMLHttpRequest();
         request.onreadystatechange = (e) => {
-          if (request.readyState !== 4) {  
-            return;
-          }
-          if (request.status === 200) {
-            const parsedInfo = JSON.parse(request.response);
-            this.addAll(parsedInfo.orgs);
-            // this.props.newOrg(parsedInfo.orgs);
-            this.addTags(parsedInfo.tags);
-          } else {
-            console.warn('Error');
-          }
+            if (request.readyState !== 4) {
+                return;
+            }
+            if (request.status === 200) {
+                const parsedInfo = JSON.parse(request.response);
+                this.addAll(parsedInfo.orgs);
+                // this.props.newOrg(parsedInfo.orgs);
+                this.addTags(parsedInfo.tags);
+            } else {
+                console.warn('Error');
+            }
         };
         request.open('GET', 'http://localhost:8080/search', true);
         // request.open('GET', 'http://www.taalmap.nl:3008/search', true);
         // request.open('GET', 'http://52.10.252.171:3008/search', true);
-    
-        request.send();
-      }
 
-    
+        request.send();
+    }
+
+
     addTagToState = (index, tag) => {
         // this.setState({result:[]});
         let res = [];
         const tags = this.state.tags;
         const tagSelected = this.state.tagSelected;
 
+        const tagsClass = document.querySelectorAll('.tag');
+        for (let i = 0; i < tagsClass.length; i++) {
+            tagsClass[i].classList.remove('tagAvail');
+        }
+
         tags[index].isActive = !tags[index].isActive;
         this.setState({ tags });
-        const indexTag = tagSelected.indexOf(tag.id+1);
-        tags[index].isActive ? tagSelected.push(tag.id+1) : tagSelected.splice(indexTag, 1);
+        const indexTag = tagSelected.indexOf(tag.id + 1);
+        tags[index].isActive ? tagSelected.push(tag.id + 1) : tagSelected.splice(indexTag, 1);
         this.setState({ tagSelected });
         ///////////////////////////////////////////
         Observ.all.map((e, ind) => {
             e.tags.map((item) => {
-                 tagSelected.forEach((element)=>{
-                     element === item ?
-                     res.push(Observ.all[ind]) : console.log(false);
-                    });
-                 }); 
+                tagSelected.forEach((element) => {
+                    element === item ?
+                        res.push(Observ.all[ind]) : console.log(false);
+                });
             });
-        
-        // this.addResult(obj)
-        // Observ.result=obj;
-        // (this.state.tagSelected)
-        // console.log(this.state.tagSelected)
-        console.log(tagSelected);
-        (!res[0] && !tagSelected[0]) ? res = Observ.all.slice(0) : console.log('fale')
-        this.setState({result: res})
+        });
+
+        if (!res[0] && !tagSelected[0]) {
+            res = Observ.all.slice(0)
         }
+        this.setState({ result: res })
+    }
 
     addTags(newTags) {
         const tagArr = Object.values(newTags);
@@ -83,7 +85,7 @@ export default class App extends Component {
         const arr = [];
         tagArr.map((e, i) => {
             obj = {
-                id: i ,
+                id: i,
                 name: e
             };
             arr.push(obj);
@@ -101,8 +103,8 @@ export default class App extends Component {
         console.log(result);
     }
 
-    setType(type){
-        this.setState({type});
+    setType(type) {
+        this.setState({ type });
     }
 
     render() {
@@ -116,39 +118,39 @@ export default class App extends Component {
                     {tag.name}
                 </h5>);
         });
-        if(Observ.ready){
+        if (Observ.ready) {
 
-        return (
-            <div>
-                <div className="haeder">
-                    <h1>Welcome to VWN website</h1>
-                    <div className="tags">
-                        {head}
-                    </div>
-                </div>
+            return (
                 <div>
-                    <div className="bod">
-                        <Button
-                            tagSelected={this.state.tagSelected}
+                    <div className="haeder">
+                        <h1>Welcome to VWN website</h1>
+                        <div className="tags">
+                            {head}
+                        </div>
+                    </div>
+                    <div>
+                        <div className="bod">
+                            <Button
+                                tagSelected={this.state.tagSelected}
+                                result={this.state.result}
+                                type={this.state.type}
+                                setType={(e) => this.setType(e)}
+                                newOrg={(e) => this.addResult(e)}
+                            />
+                        </div>
+
+                    </div>
+                    <div className='map'>
+                        <Map
                             result={this.state.result}
-                            type = {this.state.type}
-                            setType ={(e)=>this.setType(e)}
-                            newOrg={(e) => this.addResult(e)}
+                            ready={this.state.ready}
                         />
-                    </div>
-                    
-                </div>
-                <div className='map'>
-                    <Map
-                        result={this.state.result}
-                        ready={this.state.ready}
-                    />
-                    <div className="list">
-                        <CompList result={this.state.result} tag={this.state.tags} />
+                        <div className="list">
+                            <CompList result={this.state.result} tag={this.state.tags} />
+                        </div>
                     </div>
                 </div>
-            </div>
-        );
-    }else return 'loading....'
+            );
+        } else return 'loading....'
     }
 }

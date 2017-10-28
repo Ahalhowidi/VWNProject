@@ -16,8 +16,9 @@ selectlist=(id)=>{
     }
     
 
-    moreList(item) {
-
+    moreList(item, x) {
+        
+        x.target.lastChild.classList.toggle('more')
         const tagsClass = document.querySelectorAll('.tag');
         for (let i = 0; i < tagsClass.length; i++) {
             tagsClass[i].classList.remove('tagAvail');
@@ -25,11 +26,11 @@ selectlist=(id)=>{
         item.tags.map((e) => {
             tagsClass[e - 1].classList.add('tagAvail')
         });
-        Observ.selectedListMarker =[];
-        item.contacts.map((e)=>{
-            Observ.selectedListMarker.push(e.id)
-        })
-         console.log(Observ.selectedListMarker)
+        // Observ.selectedListMarker =[];
+        // item.contacts.map((e)=>{
+        //     Observ.selectedListMarker.push(e.id)
+        // })
+        //  console.log(Observ.selectedListMarker)
 
     }
 
@@ -39,16 +40,16 @@ selectlist=(id)=>{
                 return (
                     <div
                         className="orgItem"
-                        onClick={() => this.moreList(this.props.result[i])}
+                        onClick={(e) => this.moreList(this.props.result[i], e)}
                         key={i}>
                         <div className="listTitle">
                             <h4>{e.name}<img className='logo' src={e.logo}/></h4>                         
-                        </div>
-                        <div className="desc">
-                            <p>{e.tags}{e.description_company}</p>
-                            <p>Phone: {e.contacts[0].phone}</p>
-                            <p>{e.contacts[0].email}</p>
-                            <a href={e.contacts[0].web} target="_blank">{e.contacts[0].web}</a>
+                            <div className="desc">
+                                <p>{e.tags}{e.description_company}</p>
+                                <p>Phone: {e.contacts[0].phone}</p>
+                                <p>{e.contacts[0].email}</p>
+                                <a href={e.contacts[0].web} target="_blank">{e.contacts[0].web}</a>
+                            </div>
                         </div>
                     </div>
                 );
