@@ -4,26 +4,13 @@ import '../new_app.css';
 import Observ from './obs'
 import CompList from './complist'
 
-export default class Buttons extends Component {
-
-    componentDidMount(){
-        
-    }
-
-    goDown(){
-        const item= document.getElementById('down');
-        item.scrollIntoView({
-            behavior: 'smooth',
-            block: 'start'
-        });
-        console.log('done george');
-    }
+export default class Form extends Component {
 
     render() {
         
         return (
             <div className='top'>
-                <div className="bod">
+                <form className="bod">
                     <div>
                         <button
                             className="but"
@@ -41,11 +28,9 @@ export default class Buttons extends Component {
                             </button>
                     </div>
                     <div>
-                        <button
-                        onClick={()=>this.goDown()}
-                        >I'm New Provider</button>
+                        <button>I'm New Provider</button>
                     </div>
-                </div>
+                </form>
             </div>
         )
     }

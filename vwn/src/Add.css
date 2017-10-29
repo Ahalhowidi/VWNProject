@@ -1,0 +1,124 @@
+.logo_big_container {
+    height: 100%;
+    width: 50%;
+    margin: 0px;
+    padding: 0px;
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+    align-items: center;
+}
+#logo_big {
+    width: 100%;
+    margin: 0px;
+    padding: 0px;
+}
+.add_container {
+    height: calc(100% - 40px);
+    width: calc(100vw - 40px);
+    margin: 0px;
+    padding: 10px;
+}
+.form_container {
+    background-color: #91a5e5;
+    border-color: #022f5a;
+    border-radius: 7px;
+    margin: 0px;
+    padding: 10px;
+    display: flex;
+    flex-flow: column nowrap;
+    height: 100%;
+}
+.description_container {
+    margin: 0px;
+    padding: 0px;
+    display: flex;
+    flex-flow: row wrap;
+}
+.description_element {
+    box-sizing: border-box;
+    width: calc(50% - 20px);
+    margin: 10px;
+    display: flex;
+    flex-flow: row wrap;
+    align-items: flex-start;
+}
+textarea {
+    width: 100%;
+    resize: none;
+}
+.space_filler {
+    width: 100%;
+    border: 0;
+    border-radius: 5px;
+    height: 2em;
+}
+.submit_container {
+    padding: 10px;
+    display: flex;
+    flex-flow: row nowrap;
+}
+.color_red {
+    color: red;
+}
+.color_green {
+    color: green;
+}
+/* .submit, .reset {
+    margin: 2px;
+    padding: 9px;
+    color: white;
+    border: 1px solid black;
+    border-radius: 7px;
+    outline: none;
+    font-size: 0.8em;
+    cursor: pointer;
+} */
+.submit {
+    background-color: green;
+}
+.reset {
+    background-color: rgb(192, 0 , 0)
+} 
+#messageContainer{
+    flex: 1 1 0;
+    margin-right: 10px;
+}
+.tag_button_container {
+    padding: 10px;
+}
+hr {
+    margin-left: 10px;
+    margin-right: 10px;
+}
+#filters {
+    margin-left: 10px;
+}
+#addTitle {
+    margin: 10px;
+}
+#scroll_container {
+    flex: 1 1 0;
+    overflow: auto;
+}
+@media (max-width: 950px) {
+    .logo_big_container {
+        width: 30%;
+    }
+    .add_container {
+        width: 70%;
+    }    
+}
+@media (max-width: 685px) {
+    .logo_big_container {
+        width: 0%;
+    }
+    .add_container {
+        width: 100%;
+    }    
+}
+@media (max-width: 485px) {
+    .description_element {
+        width: calc(100% - 20px);
+    }
+}

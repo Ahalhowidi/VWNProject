@@ -3,6 +3,7 @@ import Button from './Component/button';
 // import TagData from './Component/tagdata';
 import CompList from './Component/complist';
 import Map from './Component/map';
+import Form from './Component/form'
 import Observ from './Component/obs';
 import './new_app.css';
 
@@ -14,7 +15,7 @@ export default class App extends Component {
         tagSelected: [],
         result: [],
         ready: false,
-        type: 0
+        type: 1
     };
 
     addAll(result) {
@@ -25,6 +26,7 @@ export default class App extends Component {
     }
 
     componentWillMount() {
+        // document.documentElement.style.overflow = 'hidden';
         const request = new XMLHttpRequest();
         request.onreadystatechange = (e) => {
             if (request.readyState !== 4) {
@@ -95,17 +97,19 @@ export default class App extends Component {
         });
     }
 
-    addResult(result) {
-        this.setState({
-            result,
-            ready: true
-        });
-        console.log(result);
-    }
+    // addResult(result) {
+    //     this.setState({
+    //         result,
+    //         ready: true
+    //     });
+    //     console.log(result);
+    // }
 
     setType(type) {
-        this.setState({ type });
+        // this.setState({ type });
+        this.setState({type:type.target.id})
     }
+
 
     render() {
         const head = this.state.tags.map((tag, index) => {
@@ -122,20 +126,17 @@ export default class App extends Component {
 
             return (
                 <div>
-                    <div className="haeder">
-                        <h1>Welcome to VWN website</h1>
+                    <div className="haeder" id="top">
+                        <h1>Newcommer Helper</h1>
                         <div className="tags">
                             {head}
                         </div>
                     </div>
                     <div>
                         <div className="bod">
-                            <Button
-                                tagSelected={this.state.tagSelected}
-                                result={this.state.result}
+                            <Button   
                                 type={this.state.type}
-                                setType={(e) => this.setType(e)}
-                                newOrg={(e) => this.addResult(e)}
+                                setKind={(e) => this.setType(e)}
                             />
                         </div>
 
@@ -146,8 +147,11 @@ export default class App extends Component {
                             ready={this.state.ready}
                         />
                         <div className="list">
-                            <CompList result={this.state.result} tag={this.state.tags} />
+                            <CompList result={this.state.result} tag={this.state.tags} type={this.state.type}/>
                         </div>
+                    </div>
+                    <div className="form">
+                        <Form />
                     </div>
                 </div>
             );

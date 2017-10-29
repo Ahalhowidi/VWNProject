@@ -74,6 +74,9 @@ button:hover {
     background-color: #FFCACA;
     color: #362B1B;
 }
+button:active{
+    box-shadow: 1px 1px 2px #4d4d4d
+}
 
 .bod {
     display: flex;
@@ -107,6 +110,7 @@ button:hover {
     width: clac(100% - 250px);
     height: calc(100vh - 180px);
     position: relative;
+    margin-bottom: 2em;
 }
 
 .googleMap{
@@ -124,6 +128,7 @@ button:hover {
     position:absolute; 
     overflow: auto;
     border: 2px solid #3033D8;
+    box-shadow: 4px 4px 8px #4d4d4d;
 }
 
 .orgItem{
@@ -131,24 +136,27 @@ button:hover {
     
     color: black;
     border-bottom: 1px solid #555555;
+    
 }
 
 .desc{
-    height: 18px;
+    transition: 1s;
+    max-height: 18px;
     overflow: hidden;
-    /* height: calc(100vh - 40px); */
+    
     
     text-align: justify;
     
-    margin-bottom: 10px;
     /* text-justify: inter-word; */
+    margin-bottom: 10px;
     /* background-color: white; */
-    transition: 1s;
 }
 
 .more{
-    
+    transition: max-height 1s ease-in-out;
     height: auto;
+    max-height: 1250px;
+    /* max-height: auto; */
 }
 
 .logo{
@@ -156,4 +164,8 @@ button:hover {
     width: 20%;
     border: 1px solid #5B5DD8;
     box-shadow: 2px 2px 5px #7a7a7a;
+}
+
+.contact{
+    margin: 5px; 
 }
